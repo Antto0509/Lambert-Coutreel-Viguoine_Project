@@ -40,3 +40,19 @@
 .read-the-docs {
   color: #888;
 }
+
+
+
+
+.home {
+  text-align: center;
+  padding: 20px;
+}
+
+.home-main {
+  margin: 20px;
+}
+
+.home-section {
+  margin-bottom: 20px;
+}
