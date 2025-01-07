@@ -1,21 +1,53 @@
-# This .gitignore file is for Unity projects.
-
-# Ignore the following files and directories:
-[Ll]ibrary/
-[Tt]emp/
-[Tt]arget/
-[Aa]ssets/AssetStoreTools*
-
-# User-specific files
-.idea/
-.vscode/
-
-# Windows specific files
+# Fichiers système
 .DS_Store
 Thumbs.db
 
-# Unity-generated files
-obj/
+# Fichiers générés par Unity
+[Ll]ibrary/
+[Tt]emp/
+[Oo]bj/
+[Bb]uild/
+[Bb]uilds/
+[Ll]ogs/
+[Mm]emoryCaptures/
+
+# Fichiers de configuration utilisateur
+UserSettings/
+
+# Exclure les caches de Lightmap et GI
+/[Aa]ssets/../[Ll]ightmap-[Ss]napshot
+/[Aa]ssets/../[Ll]ighting[Dd]ata[.]asset
+
+# Fichiers de package générés automatiquement
+/Packages/com.unity.package-manager/.*
+
+# Fichiers de build spécifiques à Unity Cloud Build
+/[Bb]uildReport/
+
+/[Aa]ssets/../[Cc]rash[Dd]umps
+
+# Fichiers spécifiques aux IDE
+.vscode/
+.idea/
 *.suo
 *.user
 *.userprefs
+*.csproj
+*.pidb
+*.unityproj
+*.booproj
+*.svd
+
+# Fichiers de configuration JetBrains Rider
+*.DotSettings.user
+
+# Fichiers de log de Unity
+*.stacktrace
+
+# Fichiers de versioning automatique
+/[Aa]ssets/../[Pp]rojectSettings/VersionControlSettings.asset
+
+# Autres fichiers ignorés
+*.apk
+*.unitypackage
+*.log

@@ -4,7 +4,7 @@
 PlayerSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 28
-  productGUID: e47fc240fabfe2b509859f6f46b7f573
+  productGUID: 3c5de0cdaf56a5eb394b24a4ea0d0b76
   AndroidProfiler: 0
   AndroidFilterTouchesWhenObscured: 0
   AndroidEnableSustainedPerformanceMode: 0
@@ -687,10 +687,10 @@ PlayerSettings:
   captureStartupLogs: {}
   activeInputHandler: 2
   windowsGamepadBackendHint: 0
-  cloudProjectId: 4069fb30-514e-4648-b9a9-8225c4707c12
+  cloudProjectId: 6e0b8495-4ea8-4aea-977c-e1e13c1fa433
   framebufferDepthMemorylessMode: 0
   qualitySettingsNames: []
-  projectName: Pacman
+  projectName: Pacman 2025-01-07_20-03-31
   organizationId: arcadium_2020
   cloudEnabled: 0
   legacyClampBlendShapeWeights: 0
