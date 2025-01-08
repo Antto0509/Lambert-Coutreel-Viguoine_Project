@@ -13,6 +13,8 @@ Thumbs.db
 
 # Fichiers de configuration utilisateur
 UserSettings/
+ProjectSettings/
+Logs/
 
 # Exclure les caches de Lightmap et GI
 /[Aa]ssets/../[Ll]ightmap-[Ss]napshot
