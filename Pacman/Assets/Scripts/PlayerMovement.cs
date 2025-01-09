@@ -1,16 +1,22 @@
+using System;
 using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    public float moveSpeed = 5f;
+    public Rigidbody2D rb;
+    private Vector2 movement;
+
+    private void Update()
     {
-        
+        float horizontal = Input.GetAxis("Horizontal");
+        float vertical = Input.GetAxis("Vertical");
+
+        movement = new Vector2(horizontal, vertical).normalized;
     }
 
-    // Update is called once per frame
-    void Update()
+    private void FixedUpdate()
     {
-        
+        rb.linearVelocity = movement * moveSpeed;
     }
 }
