@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.Tilemaps;
@@ -13,6 +14,8 @@ public class PlayerMovement : MonoBehaviour
     public Tilemap roadTilemap;
     
     public HealthManager healthManager;
+    
+    public ScoreManager scoreManager;
     
     public Transform RespawnPoint;
     
@@ -125,6 +128,15 @@ public class PlayerMovement : MonoBehaviour
         if (other.gameObject.CompareTag("Ghost"))
         {
             StartCoroutine(Death());
+        }
+    }
+
+    private void OnTriggerEnter2D(Collider2D other)
+    {
+        if (other.CompareTag("PacGomme"))
+        {
+            scoreManager.AddScore(10);
+            Destroy(other.gameObject);
         }
     }
 
