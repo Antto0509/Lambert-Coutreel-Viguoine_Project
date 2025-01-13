@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1741255658730185994}
   - component: {fileID: 7715825565934725482}
+  - component: {fileID: 1138896327760951449}
   m_Layer: 0
   m_Name: Daco_4096030_30
   m_TagString: Untagged
@@ -87,6 +88,28 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!95 &1138896327760951449
+Animator:
+  serializedVersion: 7
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 384182964441526537}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 69901db44651f614ba101bcd65f36ef5, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_AnimatePhysics: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &6750653893471713517
 GameObject:
   m_ObjectHideFlags: 0
@@ -170,10 +193,10 @@ Rigidbody2D:
   m_Simulated: 1
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
-  m_Mass: 1
+  m_Mass: 0.0001
   m_LinearDamping: 0
-  m_AngularDamping: 0.05
-  m_GravityScale: 1
+  m_AngularDamping: 0
+  m_GravityScale: 0
   m_Material: {fileID: 0}
   m_IncludeLayers:
     serializedVersion: 2
@@ -184,7 +207,7 @@ Rigidbody2D:
   m_Interpolate: 0
   m_SleepingMode: 1
   m_CollisionDetection: 0
-  m_Constraints: 0
+  m_Constraints: 4
 --- !u!114 &3249532465035369892
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -197,3 +220,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2cdd304baed46ae74890faaae151d386, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  moveSpeed: 5
+  snapTolerance: 0.1
+  rb: {fileID: 121516192348429095}
+  roadTilemap: {fileID: 0}
+  healthManager: {fileID: 0}
+  RespawnPoint: {fileID: 0}
