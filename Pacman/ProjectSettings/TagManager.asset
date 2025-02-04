@@ -4,9 +4,13 @@
 TagManager:
   serializedVersion: 3
   tags:
+<<<<<<< Updated upstream
   - Road
   - Ghost
   - PacGomme
+=======
+  - SpawnAreaGhost
+>>>>>>> Stashed changes
   layers:
   - Default
   - TransparentFX
