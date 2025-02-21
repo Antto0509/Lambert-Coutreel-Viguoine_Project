@@ -11949,6 +11949,11 @@ Tilemap:
     e31: 0
     e32: 0
     e33: 1
+--- !u!4 &2044219069 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 2447902650402795169, guid: 6f7799ef8924d45dfa6c0aabb306a06e, type: 3}
+  m_PrefabInstance: {fileID: 3094011393207294480}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &3094011393207294480
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -12018,6 +12023,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1567233811113864593, guid: 39acbab730b50714abc89a28fcca7a32, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 3013620899307401847, guid: 39acbab730b50714abc89a28fcca7a32, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -12086,6 +12095,10 @@ PrefabInstance:
       propertyPath: speed
       value: 2
       objectReference: {fileID: 0}
+    - target: {fileID: 8070580318483744838, guid: 39acbab730b50714abc89a28fcca7a32, type: 3}
+      propertyPath: pacman
+      value: 
+      objectReference: {fileID: 2044219069}
     - target: {fileID: 8070580318483744838, guid: 39acbab730b50714abc89a28fcca7a32, type: 3}
       propertyPath: target.x
       value: 2
