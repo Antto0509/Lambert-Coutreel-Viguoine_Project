@@ -27,6 +27,9 @@ public class GhostMovement : MonoBehaviour
     public GameObject seeDown;
     public GameObject seeLeft;
     public GameObject seeRight;
+    
+    public GameObject pointSpawn;
+    public GameObject point;
 
     /// <summary>
     /// Initialise le fantôme.
@@ -62,6 +65,7 @@ public class GhostMovement : MonoBehaviour
 
         if (IsCenteredOnTile())
         {
+            // Si le fantôme est centré sur une tuile, il choisit une nouvelle direction
             if (!CanMoveInDirection(_targetDirection))
             {
                 ChooseNewDirection();
@@ -77,6 +81,8 @@ public class GhostMovement : MonoBehaviour
     /// <returns> Coroutine. </returns>
     private IEnumerator ReleaseFromHouse()
     {
+        List<Vector2> directions = new List<Vector2> { Vector2.left, Vector2.right, Vector2.up, Vector2.down };
+        
         float delay = ghostType switch
         {
             GhostType.Pinky => 5f,
@@ -84,17 +90,18 @@ public class GhostMovement : MonoBehaviour
             GhostType.Clyde => 15f,
             _ => 0f
         };
-
+        
         yield return new WaitForSeconds(delay);
+        
+        // Se déplace vers "pointSpawn" et ensuite vers "point"
+        _targetDirection = GetBestDirectionToPoint(pointSpawn.transform.position, directions);
+        yield return new WaitForSeconds(2f);
+        _targetDirection = GetBestDirectionToPoint(point.transform.position, directions);
+        yield return new WaitForSeconds(2f);
+        
         _currentState = GhostState.Scatter;
         isInHouse = false;
         
-        while (Vector2.Distance(transform.position, respawnPointGhost.position) > snapTolerance)
-        {
-            transform.position = Vector2.MoveTowards(transform.position, respawnPointGhost.position, moveSpeed * Time.deltaTime);
-            yield return null;
-        }
-
         ChooseNewDirection();
     }
 
