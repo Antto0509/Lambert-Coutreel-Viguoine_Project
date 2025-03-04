@@ -1,7 +1,7 @@
-using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Serialization;
 using UnityEngine.Tilemaps;
 using Random = UnityEngine.Random;
 
@@ -15,7 +15,7 @@ public class GhostMovement : MonoBehaviour
     public Tilemap roadTilemap;
     public Rigidbody2D rb;
     public Transform pacman;
-    public Transform ghostHouseExit; 
+    public Transform respawnPointGhost;
     public bool isInHouse = true;
     private Vector2 _targetDirection;
     private Vector2 _lastDirection;
@@ -28,6 +28,9 @@ public class GhostMovement : MonoBehaviour
     public GameObject seeLeft;
     public GameObject seeRight;
 
+    /// <summary>
+    /// Initialise le fantôme.
+    /// </summary>
     private void Start()
     {
         AlignToTileCenter();
@@ -46,6 +49,9 @@ public class GhostMovement : MonoBehaviour
         UpdateSprite();
     }
 
+    /// <summary>
+    /// Met à jour la position du fantôme.
+    /// </summary>
     private void Update()
     {
         if (isInHouse)
@@ -65,6 +71,10 @@ public class GhostMovement : MonoBehaviour
         UpdateSprite();
     }
 
+    /// <summary>
+    /// Libère le fantôme de la maison après un certain délai.
+    /// </summary>
+    /// <returns> Coroutine. </returns>
     private IEnumerator ReleaseFromHouse()
     {
         float delay = ghostType switch
@@ -78,28 +88,38 @@ public class GhostMovement : MonoBehaviour
         yield return new WaitForSeconds(delay);
         _currentState = GhostState.Scatter;
         isInHouse = false;
-
-        while (Vector2.Distance(transform.position, ghostHouseExit.position) > snapTolerance)
+        
+        while (Vector2.Distance(transform.position, respawnPointGhost.position) > snapTolerance)
         {
-            transform.position = Vector2.MoveTowards(transform.position, ghostHouseExit.position, moveSpeed * Time.deltaTime);
+            transform.position = Vector2.MoveTowards(transform.position, respawnPointGhost.position, moveSpeed * Time.deltaTime);
             yield return null;
         }
 
         ChooseNewDirection();
     }
 
+    /// <summary>
+    /// Déplace le fantôme à l'intérieur de la maison.
+    /// </summary>
     private void MoveInsideHouse()
     {
         float oscillationSpeed = 1f;
         transform.position += Vector3.up * (Mathf.Sin(Time.time * oscillationSpeed) * Time.deltaTime);
     }
 
+    /// <summary>
+    /// Centre le fantôme sur une tuile.
+    /// </summary>
     private void AlignToTileCenter()
     {
         Vector3Int cellPosition = roadTilemap.WorldToCell(transform.position);
         transform.position = roadTilemap.GetCellCenterWorld(cellPosition);
     }
 
+    /// <summary>
+    /// Vérifie si le fantôme est centré sur une tuile.
+    /// </summary>
+    /// <returns> Vrai si le fantôme est centré sur une tuile, faux sinon. </returns>
     private bool IsCenteredOnTile()
     {
         Vector3 worldPosition = transform.position;
@@ -108,12 +128,20 @@ public class GhostMovement : MonoBehaviour
         return Vector2.Distance(worldPosition, tileCenter) <= snapTolerance;
     }
 
+    /// <summary>
+    /// Vérifie si le fantôme peut se déplacer dans une direction donnée.
+    /// </summary>
+    /// <param name="direction"> Direction à vérifier. </param>
+    /// <returns> Vrai si le fantôme peut se déplacer dans la direction donnée, faux sinon. </returns>
     private bool CanMoveInDirection(Vector2 direction)
     {
         Vector3Int targetPosition = roadTilemap.WorldToCell(transform.position + (Vector3)direction);
         return roadTilemap.HasTile(targetPosition);
     }
 
+    /// <summary>
+    /// Choisi une nouvelle direction pour le fantôme.
+    /// </summary>
     private void ChooseNewDirection()
     {
         if (isInHouse) return;
@@ -150,23 +178,34 @@ public class GhostMovement : MonoBehaviour
         _lastDirection = _targetDirection;
     }
 
+    /// <summary>
+    /// Retourne la direction à suivre pour chasser Pacman.
+    /// </summary>
+    /// <param name="directions"> Liste des directions possibles. </param>
+    /// <returns> La direction à suivre pour chasser Pacman. </returns>
     private Vector2 GetChaseDirection(List<Vector2> directions)
     {
         switch (ghostType)
         {
-            case GhostType.Blinky:
+            case GhostType.Blinky: // Chasse Pacman
                 return GetBestDirectionToPoint(pacman.position, directions);
-            case GhostType.Pinky:
+            case GhostType.Pinky: // Cible 4 cases devant Pacman
                 return GetBestDirectionToPoint((Vector2)pacman.position + (Vector2)pacman.up * 4, directions);
-            case GhostType.Inky:
+            case GhostType.Inky: // Cible la position symétrique de Blinky par rapport à Pacman
                 return Random.value > 0.5f ? GetBestDirectionToPoint(pacman.position, directions) : GetFarthestDirectionFromPacman(directions);
-            case GhostType.Clyde:
-                return Vector2.Distance(transform.position, pacman.position) > 8f ? GetBestDirectionToPoint(pacman.position, directions) : GetBestDirectionToPoint(ghostHouseExit.position, directions);
+            case GhostType.Clyde: // Chasse Pacman si distance > 8, sinon retourne à la maison
+                return Vector2.Distance(transform.position, pacman.position) > 8f ? GetBestDirectionToPoint(pacman.position, directions) : GetBestDirectionToPoint(respawnPointGhost.position, directions);
             default:
                 return directions[Random.Range(0, directions.Count)];
         }
     }
 
+    /// <summary>
+    /// Retourne la direction la plus courte pour atteindre un point donné.
+    /// </summary>
+    /// <param name="target"> Position cible. </param>
+    /// <param name="directions"> Liste des directions possibles. </param>
+    /// <returns> La direction la plus courte pour atteindre le point donné. </returns>
     private Vector2 GetBestDirectionToPoint(Vector2 target, List<Vector2> directions)
     {
         Vector2 bestDirection = directions[0];
@@ -185,6 +224,11 @@ public class GhostMovement : MonoBehaviour
         return bestDirection;
     }
 
+    /// <summary>
+    /// Retourne la direction la plus éloignée de Pacman.
+    /// </summary>
+    /// <param name="directions"> Liste des directions possibles. </param>
+    /// <returns> La direction la plus éloignée de Pacman. </returns>
     private Vector2 GetFarthestDirectionFromPacman(List<Vector2> directions)
     {
         Vector2 bestDirection = directions[0];
@@ -203,6 +247,9 @@ public class GhostMovement : MonoBehaviour
         return bestDirection;
     }
 
+    /// <summary>
+    /// Met à jour le sprite du fantôme en fonction de sa direction.
+    /// </summary>
     private void UpdateSprite()
     {
         if (_targetDirection == Vector2.right)

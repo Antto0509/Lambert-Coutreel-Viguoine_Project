@@ -184,6 +184,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1567233811113864593}
   - component: {fileID: 8418657296054086585}
+  - component: {fileID: 4776629456184187072}
   m_Layer: 0
   m_Name: Daco_4096030_0
   m_TagString: Untagged
@@ -261,6 +262,28 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!95 &4776629456184187072
+Animator:
+  serializedVersion: 7
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4185590752182297643}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: b1a977e6f7797934e9ef00cd5223ea83, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_AnimatePhysics: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &7179237721691621050
 GameObject:
   m_ObjectHideFlags: 0
@@ -275,7 +298,7 @@ GameObject:
   - component: {fileID: 8070580318483744838}
   m_Layer: 0
   m_Name: GhostRed
-  m_TagString: Untagged
+  m_TagString: Ghost
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -347,9 +370,9 @@ Rigidbody2D:
   m_Simulated: 1
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
-  m_Mass: 1
+  m_Mass: 0.0001
   m_LinearDamping: 0
-  m_AngularDamping: 0.05
+  m_AngularDamping: 0
   m_GravityScale: 0
   m_Material: {fileID: 0}
   m_IncludeLayers:
@@ -361,7 +384,7 @@ Rigidbody2D:
   m_Interpolate: 0
   m_SleepingMode: 1
   m_CollisionDetection: 0
-  m_Constraints: 0
+  m_Constraints: 4
 --- !u!114 &8070580318483744838
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -375,15 +398,17 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ghostType: 0
-  moveSpeed: 2
+  moveSpeed: 5
   snapTolerance: 0.1
   roadTilemap: {fileID: 0}
-  rb: {fileID: 0}
+  rb: {fileID: 6177578930732454148}
   pacman: {fileID: 0}
-  ghostHouseExit: {fileID: 0}
-  isInHouse: 1
-  frightenedSprite: {fileID: 0}
-  frightenedEndSprite: {fileID: 0}
+  respawnPointGhost: {fileID: 0}
+  isInHouse: 0
+  seeUp: {fileID: 2268727522338011205}
+  seeDown: {fileID: 7458331903745750533}
+  seeLeft: {fileID: 976776673105050237}
+  seeRight: {fileID: 4185590752182297643}
 --- !u!1 &7458331903745750533
 GameObject:
   m_ObjectHideFlags: 0
