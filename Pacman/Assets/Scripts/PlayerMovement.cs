@@ -1,6 +1,6 @@
-using System;
 using System.Collections;
 using UnityEngine;
+using UnityEngine.Serialization;
 using UnityEngine.Tilemaps;
 
 public class PlayerMovement : MonoBehaviour
@@ -28,6 +28,12 @@ public class PlayerMovement : MonoBehaviour
     private Vector2 target;
     
     private Vector3Int currentCell;
+
+    public GameObject Sortie1;
+    
+    public GameObject Sortie2;
+    
+    public bool inTp;
 
     private void Start()
     {
@@ -124,20 +130,31 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 
-    private void OnCollisionEnter2D(Collision2D other)
-    {
-        if (other.gameObject.CompareTag("Ghost"))
-        {
-            StartCoroutine(Death());
-        }
-    }
-
     private void OnTriggerEnter2D(Collider2D other)
     {
         if (other.CompareTag("PacGomme"))
         {
             scoreManager.AddScore(10);
             Destroy(other.gameObject);
+        }
+        
+        if (other.CompareTag("Ghost"))
+        {
+            StartCoroutine(Death());
+        }
+
+        if (other.CompareTag("Sortie") && !inTp)
+        {
+            inTp = true;
+            transform.position = other.transform.position == Sortie1.transform.position ? Sortie2.transform.position : Sortie1.transform.position;
+        }
+    }
+    
+    private void OnTriggerExit2D(Collider2D other)
+    {
+        if (other.CompareTag("Sortie"))
+        {
+            inTp = false;
         }
     }
 

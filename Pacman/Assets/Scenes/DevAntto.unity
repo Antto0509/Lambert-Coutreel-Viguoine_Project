@@ -208,6 +208,7 @@ MonoBehaviour:
   heartsParent: {fileID: 899785606}
   maxHearts: 20
   currentHealth: 3
+  heartObjects: []
 --- !u!4 &170735147
 Transform:
   m_ObjectHideFlags: 0
@@ -11632,6 +11633,11 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!58 &818670276 stripped
+CircleCollider2D:
+  m_CorrespondingSourceObject: {fileID: 1077931115523406571, guid: a9e6ee2a3941c32439840b4f72d599f0, type: 3}
+  m_PrefabInstance: {fileID: 5311057516612411683}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &899785605
 GameObject:
   m_ObjectHideFlags: 0
@@ -11821,6 +11827,84 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 8520852916854531699, guid: a9e6ee2a3941c32439840b4f72d599f0, type: 3}
   m_PrefabInstance: {fileID: 5311057516612411683}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1184232064
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1184232066}
+  - component: {fileID: 1184232065}
+  m_Layer: 0
+  m_Name: Sorti2
+  m_TagString: Sortie
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!61 &1184232065
+BoxCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1184232064}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_ForceSendLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ForceReceiveLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ContactCaptureLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_CallbackLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_CompositeOperation: 0
+  m_CompositeOrder: 0
+  m_Offset: {x: 0, y: 0.082775414}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0, y: 0}
+    oldSize: {x: 0, y: 0}
+    newSize: {x: 0, y: 0}
+    adaptiveTilingThreshold: 0
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  m_Size: {x: 1, y: 2.9682145}
+  m_EdgeRadius: 0
+--- !u!4 &1184232066
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1184232064}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 10.99, y: -0.60504687, z: 0.012848356}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1466648224
 GameObject:
   m_ObjectHideFlags: 0
@@ -13048,6 +13132,42 @@ Tilemap:
     e31: 0
     e32: 0
     e33: 1
+--- !u!1 &1482832729
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1482832730}
+  m_Layer: 0
+  m_Name: PointSorti
+  m_TagString: Untagged
+  m_Icon: {fileID: -964228994112308473, guid: 0000000000000000d000000000000000, type: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1482832730
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1482832729}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 1, y: 3.5, z: 0.070969686}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!58 &1503859338 stripped
+CircleCollider2D:
+  m_CorrespondingSourceObject: {fileID: 8038166739465917665, guid: 1c9f04a3066f47541ab4a420f85681ea, type: 3}
+  m_PrefabInstance: {fileID: 6508612134167938556}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1654202967
 GameObject:
   m_ObjectHideFlags: 0
@@ -13079,6 +13199,11 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!58 &1686474741 stripped
+CircleCollider2D:
+  m_CorrespondingSourceObject: {fileID: 6722037108133499015, guid: ee80f47fccccb4647ad65ce9bfbf78aa, type: 3}
+  m_PrefabInstance: {fileID: 7994075398611385581}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1776874733
 GameObject:
   m_ObjectHideFlags: 0
@@ -13351,6 +13476,84 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1975558019
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1975558021}
+  - component: {fileID: 1975558020}
+  m_Layer: 0
+  m_Name: Sorti1
+  m_TagString: Sortie
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!61 &1975558020
+BoxCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1975558019}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_ForceSendLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ForceReceiveLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ContactCaptureLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_CallbackLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_CompositeOperation: 0
+  m_CompositeOrder: 0
+  m_Offset: {x: 0, y: 0.082775414}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0, y: 0}
+    oldSize: {x: 0, y: 0}
+    newSize: {x: 0, y: 0}
+    adaptiveTilingThreshold: 0
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  m_Size: {x: 1, y: 2.9682145}
+  m_EdgeRadius: 0
+--- !u!4 &1975558021
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1975558019}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -9.02, y: -0.60504687, z: 0.012848356}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &2044219069 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 2447902650402795169, guid: 6f7799ef8924d45dfa6c0aabb306a06e, type: 3}
@@ -13409,6 +13612,14 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3249532465035369892, guid: 6f7799ef8924d45dfa6c0aabb306a06e, type: 3}
+      propertyPath: Sortie1
+      value: 
+      objectReference: {fileID: 1975558019}
+    - target: {fileID: 3249532465035369892, guid: 6f7799ef8924d45dfa6c0aabb306a06e, type: 3}
+      propertyPath: Sortie2
+      value: 
+      objectReference: {fileID: 1184232064}
     - target: {fileID: 3249532465035369892, guid: 6f7799ef8924d45dfa6c0aabb306a06e, type: 3}
       propertyPath: animator
       value: 
@@ -13529,6 +13740,10 @@ PrefabInstance:
       propertyPath: m_AngularDamping
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6561795919259751697, guid: 39acbab730b50714abc89a28fcca7a32, type: 3}
+      propertyPath: m_IsTrigger
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 7179237721691621050, guid: 39acbab730b50714abc89a28fcca7a32, type: 3}
       propertyPath: m_Name
       value: GhostRed
@@ -13546,6 +13761,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 1654202967}
     - target: {fileID: 8070580318483744838, guid: 39acbab730b50714abc89a28fcca7a32, type: 3}
+      propertyPath: point
+      value: 
+      objectReference: {fileID: 1654202967}
+    - target: {fileID: 8070580318483744838, guid: 39acbab730b50714abc89a28fcca7a32, type: 3}
       propertyPath: seeUp
       value: 
       objectReference: {fileID: 3281637118478166974}
@@ -13553,6 +13772,14 @@ PrefabInstance:
       propertyPath: pacman
       value: 
       objectReference: {fileID: 2044219069}
+    - target: {fileID: 8070580318483744838, guid: 39acbab730b50714abc89a28fcca7a32, type: 3}
+      propertyPath: Sortie1
+      value: 
+      objectReference: {fileID: 1975558019}
+    - target: {fileID: 8070580318483744838, guid: 39acbab730b50714abc89a28fcca7a32, type: 3}
+      propertyPath: Sortie2
+      value: 
+      objectReference: {fileID: 1184232064}
     - target: {fileID: 8070580318483744838, guid: 39acbab730b50714abc89a28fcca7a32, type: 3}
       propertyPath: seeDown
       value: 
@@ -13578,9 +13805,21 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 1051196489}
     - target: {fileID: 8070580318483744838, guid: 39acbab730b50714abc89a28fcca7a32, type: 3}
+      propertyPath: pointSpawn
+      value: 
+      objectReference: {fileID: 1051196489}
+    - target: {fileID: 8070580318483744838, guid: 39acbab730b50714abc89a28fcca7a32, type: 3}
+      propertyPath: pointSortie
+      value: 
+      objectReference: {fileID: 1482832729}
+    - target: {fileID: 8070580318483744838, guid: 39acbab730b50714abc89a28fcca7a32, type: 3}
       propertyPath: roadTilemap
       value: 
       objectReference: {fileID: 1466648227}
+    - target: {fileID: 8070580318483744838, guid: 39acbab730b50714abc89a28fcca7a32, type: 3}
+      propertyPath: circleCollider
+      value: 
+      objectReference: {fileID: 7443816270216397569}
     - target: {fileID: 8070580318483744838, guid: 39acbab730b50714abc89a28fcca7a32, type: 3}
       propertyPath: respawnPointGhost
       value: 
@@ -13667,6 +13906,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1077931115523406571, guid: a9e6ee2a3941c32439840b4f72d599f0, type: 3}
+      propertyPath: m_IsTrigger
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 1342223520754411389, guid: a9e6ee2a3941c32439840b4f72d599f0, type: 3}
       propertyPath: m_LocalScale.x
       value: 1
@@ -13692,6 +13935,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 1654202967}
     - target: {fileID: 7668077435886706632, guid: a9e6ee2a3941c32439840b4f72d599f0, type: 3}
+      propertyPath: point
+      value: 
+      objectReference: {fileID: 1654202967}
+    - target: {fileID: 7668077435886706632, guid: a9e6ee2a3941c32439840b4f72d599f0, type: 3}
       propertyPath: seeUp
       value: 
       objectReference: {fileID: 1085853417}
@@ -13699,6 +13946,14 @@ PrefabInstance:
       propertyPath: pacman
       value: 
       objectReference: {fileID: 2044219069}
+    - target: {fileID: 7668077435886706632, guid: a9e6ee2a3941c32439840b4f72d599f0, type: 3}
+      propertyPath: Sortie1
+      value: 
+      objectReference: {fileID: 1975558019}
+    - target: {fileID: 7668077435886706632, guid: a9e6ee2a3941c32439840b4f72d599f0, type: 3}
+      propertyPath: Sortie2
+      value: 
+      objectReference: {fileID: 1184232064}
     - target: {fileID: 7668077435886706632, guid: a9e6ee2a3941c32439840b4f72d599f0, type: 3}
       propertyPath: seeDown
       value: 
@@ -13724,9 +13979,21 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 1051196489}
     - target: {fileID: 7668077435886706632, guid: a9e6ee2a3941c32439840b4f72d599f0, type: 3}
+      propertyPath: pointSpawn
+      value: 
+      objectReference: {fileID: 1051196489}
+    - target: {fileID: 7668077435886706632, guid: a9e6ee2a3941c32439840b4f72d599f0, type: 3}
+      propertyPath: pointSortie
+      value: 
+      objectReference: {fileID: 1482832729}
+    - target: {fileID: 7668077435886706632, guid: a9e6ee2a3941c32439840b4f72d599f0, type: 3}
       propertyPath: roadTilemap
       value: 
       objectReference: {fileID: 1466648227}
+    - target: {fileID: 7668077435886706632, guid: a9e6ee2a3941c32439840b4f72d599f0, type: 3}
+      propertyPath: circleCollider
+      value: 
+      objectReference: {fileID: 818670276}
     - target: {fileID: 7668077435886706632, guid: a9e6ee2a3941c32439840b4f72d599f0, type: 3}
       propertyPath: respawnPointGhost
       value: 
@@ -13901,8 +14168,16 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 8038166739465917665, guid: 1c9f04a3066f47541ab4a420f85681ea, type: 3}
+      propertyPath: m_IsTrigger
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 8548077653332038591, guid: 1c9f04a3066f47541ab4a420f85681ea, type: 3}
       propertyPath: Point
+      value: 
+      objectReference: {fileID: 1654202967}
+    - target: {fileID: 8548077653332038591, guid: 1c9f04a3066f47541ab4a420f85681ea, type: 3}
+      propertyPath: point
       value: 
       objectReference: {fileID: 1654202967}
     - target: {fileID: 8548077653332038591, guid: 1c9f04a3066f47541ab4a420f85681ea, type: 3}
@@ -13913,6 +14188,14 @@ PrefabInstance:
       propertyPath: pacman
       value: 
       objectReference: {fileID: 2044219069}
+    - target: {fileID: 8548077653332038591, guid: 1c9f04a3066f47541ab4a420f85681ea, type: 3}
+      propertyPath: Sortie1
+      value: 
+      objectReference: {fileID: 1975558019}
+    - target: {fileID: 8548077653332038591, guid: 1c9f04a3066f47541ab4a420f85681ea, type: 3}
+      propertyPath: Sortie2
+      value: 
+      objectReference: {fileID: 1184232064}
     - target: {fileID: 8548077653332038591, guid: 1c9f04a3066f47541ab4a420f85681ea, type: 3}
       propertyPath: seeDown
       value: 
@@ -13938,9 +14221,21 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 1051196489}
     - target: {fileID: 8548077653332038591, guid: 1c9f04a3066f47541ab4a420f85681ea, type: 3}
+      propertyPath: pointSpawn
+      value: 
+      objectReference: {fileID: 1051196489}
+    - target: {fileID: 8548077653332038591, guid: 1c9f04a3066f47541ab4a420f85681ea, type: 3}
+      propertyPath: pointSortie
+      value: 
+      objectReference: {fileID: 1482832729}
+    - target: {fileID: 8548077653332038591, guid: 1c9f04a3066f47541ab4a420f85681ea, type: 3}
       propertyPath: roadTilemap
       value: 
       objectReference: {fileID: 1466648227}
+    - target: {fileID: 8548077653332038591, guid: 1c9f04a3066f47541ab4a420f85681ea, type: 3}
+      propertyPath: circleCollider
+      value: 
+      objectReference: {fileID: 1503859338}
     - target: {fileID: 8548077653332038591, guid: 1c9f04a3066f47541ab4a420f85681ea, type: 3}
       propertyPath: respawnPointGhost
       value: 
@@ -13973,6 +14268,11 @@ GameObject:
 --- !u!50 &7443816270216397567 stripped
 Rigidbody2D:
   m_CorrespondingSourceObject: {fileID: 6177578930732454148, guid: 39acbab730b50714abc89a28fcca7a32, type: 3}
+  m_PrefabInstance: {fileID: 3672285530608587771}
+  m_PrefabAsset: {fileID: 0}
+--- !u!58 &7443816270216397569 stripped
+CircleCollider2D:
+  m_CorrespondingSourceObject: {fileID: 6561795919259751697, guid: 39acbab730b50714abc89a28fcca7a32, type: 3}
   m_PrefabInstance: {fileID: 3672285530608587771}
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &7994075398611385581
@@ -14075,8 +14375,16 @@ PrefabInstance:
       propertyPath: m_LocalPosition.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6722037108133499015, guid: ee80f47fccccb4647ad65ce9bfbf78aa, type: 3}
+      propertyPath: m_IsTrigger
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 8762479154849250625, guid: ee80f47fccccb4647ad65ce9bfbf78aa, type: 3}
       propertyPath: Point
+      value: 
+      objectReference: {fileID: 1654202967}
+    - target: {fileID: 8762479154849250625, guid: ee80f47fccccb4647ad65ce9bfbf78aa, type: 3}
+      propertyPath: point
       value: 
       objectReference: {fileID: 1654202967}
     - target: {fileID: 8762479154849250625, guid: ee80f47fccccb4647ad65ce9bfbf78aa, type: 3}
@@ -14087,6 +14395,14 @@ PrefabInstance:
       propertyPath: pacman
       value: 
       objectReference: {fileID: 2044219069}
+    - target: {fileID: 8762479154849250625, guid: ee80f47fccccb4647ad65ce9bfbf78aa, type: 3}
+      propertyPath: Sortie1
+      value: 
+      objectReference: {fileID: 1975558019}
+    - target: {fileID: 8762479154849250625, guid: ee80f47fccccb4647ad65ce9bfbf78aa, type: 3}
+      propertyPath: Sortie2
+      value: 
+      objectReference: {fileID: 1184232064}
     - target: {fileID: 8762479154849250625, guid: ee80f47fccccb4647ad65ce9bfbf78aa, type: 3}
       propertyPath: seeDown
       value: 
@@ -14112,9 +14428,21 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 1051196489}
     - target: {fileID: 8762479154849250625, guid: ee80f47fccccb4647ad65ce9bfbf78aa, type: 3}
+      propertyPath: pointSpawn
+      value: 
+      objectReference: {fileID: 1051196489}
+    - target: {fileID: 8762479154849250625, guid: ee80f47fccccb4647ad65ce9bfbf78aa, type: 3}
+      propertyPath: pointSortie
+      value: 
+      objectReference: {fileID: 1482832729}
+    - target: {fileID: 8762479154849250625, guid: ee80f47fccccb4647ad65ce9bfbf78aa, type: 3}
       propertyPath: roadTilemap
       value: 
       objectReference: {fileID: 1466648227}
+    - target: {fileID: 8762479154849250625, guid: ee80f47fccccb4647ad65ce9bfbf78aa, type: 3}
+      propertyPath: circleCollider
+      value: 
+      objectReference: {fileID: 1686474741}
     - target: {fileID: 8762479154849250625, guid: ee80f47fccccb4647ad65ce9bfbf78aa, type: 3}
       propertyPath: respawnPointGhost
       value: 
@@ -14162,3 +14490,6 @@ SceneRoots:
   - {fileID: 804390954}
   - {fileID: 1051196490}
   - {fileID: 1654202968}
+  - {fileID: 1482832730}
+  - {fileID: 1184232066}
+  - {fileID: 1975558021}

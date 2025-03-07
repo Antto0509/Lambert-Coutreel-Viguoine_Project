@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -29,8 +30,19 @@ public class GhostMovement : MonoBehaviour
     public GameObject seeRight;
     
     public GameObject pointSpawn;
+    public GameObject pointSortie;
     public GameObject point;
 
+    public int sortieStatus = 0;
+
+    public GameObject Sortie1;
+    
+    public GameObject Sortie2;
+
+    public bool inTp;
+
+    public CircleCollider2D circleCollider;
+    
     /// <summary>
     /// Initialise le fantôme.
     /// </summary>
@@ -47,7 +59,7 @@ public class GhostMovement : MonoBehaviour
         else
         {
             _currentState = GhostState.Locked;
-            StartCoroutine(ReleaseFromHouse());
+            ReleaseFromHouse();
         }
         UpdateSprite();
     }
@@ -62,14 +74,10 @@ public class GhostMovement : MonoBehaviour
             MoveInsideHouse();
             return;
         }
-
-        if (IsCenteredOnTile())
+        
+        // Si le fantôme est centré sur une tuile, il choisit une nouvelle direction
+        if (IsCenteredOnTile()) //  && !CanChangeDirection(_targetDirection)
         {
-            // Si le fantôme est centré sur une tuile, il choisit une nouvelle direction
-            if (!CanMoveInDirection(_targetDirection))
-            {
-                
-            }
             ChooseNewDirection();
         }
         rb.linearVelocity = _targetDirection * moveSpeed;
@@ -80,7 +88,7 @@ public class GhostMovement : MonoBehaviour
     /// Libère le fantôme de la maison après un certain délai.
     /// </summary>
     /// <returns> Coroutine. </returns>
-    private IEnumerator ReleaseFromHouse()
+    private void ReleaseFromHouse()
     {
         List<Vector2> directions = new List<Vector2> { Vector2.left, Vector2.right, Vector2.up, Vector2.down };
         
@@ -91,19 +99,37 @@ public class GhostMovement : MonoBehaviour
             GhostType.Clyde => 15f,
             _ => 0f
         };
-        
-        yield return new WaitForSeconds(delay);
-        
-        // Se déplace vers "pointSpawn" et ensuite vers "point"
-        _targetDirection = GetBestDirectionToPoint(pointSpawn.transform.position, directions);
-        yield return new WaitForSeconds(2f);
-        _targetDirection = GetBestDirectionToPoint(point.transform.position, directions);
-        yield return new WaitForSeconds(2f);
-        
-        _currentState = GhostState.Scatter;
-        isInHouse = false;
-        
-        ChooseNewDirection();
+
+        switch (sortieStatus)
+        {
+            case 0:
+                _targetDirection = pointSpawn.transform.position - transform.position;
+                if (pointSpawn.transform.position == transform.position)
+                {
+                    sortieStatus += 1;
+                }
+                break;
+            case 1:
+                _targetDirection = pointSortie.transform.position - transform.position;
+                if (pointSortie.transform.position == transform.position)
+                {
+                    sortieStatus += 1;
+                }
+                break;
+            case 2:
+                _targetDirection = point.transform.position - transform.position;
+                if (point.transform.position == transform.position)
+                {
+                    sortieStatus += 1;
+                }
+                break;
+            default:
+                _currentState = GhostState.Scatter;
+                circleCollider.isTrigger = true;
+                isInHouse = false;
+                ChooseNewDirection();
+                break;
+        }
     }
 
     /// <summary>
@@ -111,6 +137,7 @@ public class GhostMovement : MonoBehaviour
     /// </summary>
     private void MoveInsideHouse()
     {
+        circleCollider.isTrigger = false;
         float oscillationSpeed = 1f;
         transform.position += Vector3.up * (Mathf.Sin(Time.time * oscillationSpeed) * Time.deltaTime);
     }
@@ -141,7 +168,7 @@ public class GhostMovement : MonoBehaviour
     /// </summary>
     /// <param name="direction"> Direction à vérifier. </param>
     /// <returns> Vrai si le fantôme peut se déplacer dans la direction donnée, faux sinon. </returns>
-    private bool CanMoveInDirection(Vector2 direction)
+    private bool CanChangeDirection(Vector2 direction)
     {
         Vector3Int targetPosition = roadTilemap.WorldToCell(transform.position + (Vector3)direction);
         return roadTilemap.HasTile(targetPosition);
@@ -159,8 +186,12 @@ public class GhostMovement : MonoBehaviour
 
         foreach (Vector2 dir in allDirections)
         {
-            if (CanMoveInDirection(dir))
+            if (CanChangeDirection(dir))
             {
+                if (dir == -_targetDirection)
+                {
+                    continue;
+                }
                 availableDirections.Add(dir);
             }
         }
@@ -180,11 +211,7 @@ public class GhostMovement : MonoBehaviour
         }
         else
         {
-            do
-            {
-                _targetDirection = availableDirections[Random.Range(0, availableDirections.Count)];
-                Debug.Log("j'ai choisi une direction");
-            }while (_targetDirection == _lastDirection);
+            _targetDirection = availableDirections[Random.Range(0, availableDirections.Count)];
         }
 
         _lastDirection = _targetDirection;
@@ -291,6 +318,23 @@ public class GhostMovement : MonoBehaviour
             seeDown.SetActive(true);
             seeLeft.SetActive(false);
             seeRight.SetActive(false);
+        }
+    }
+
+    private void OnTriggerEnter2D(Collider2D other)
+    {
+        if (other.CompareTag("Sortie") && !inTp)
+        {
+            inTp = true;
+            transform.position = other.transform.position == Sortie1.transform.position ? Sortie2.transform.position : Sortie1.transform.position;
+        }
+    }
+
+    private void OnTriggerExit2D(Collider2D other)
+    {
+        if (other.CompareTag("Sortie"))
+        {
+            inTp = false;
         }
     }
 }
