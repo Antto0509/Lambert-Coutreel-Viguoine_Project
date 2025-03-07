@@ -8,6 +8,7 @@ public class GenerationItemManager : MonoBehaviour
     public GameObject pacGommePrefab;
 
     public GameObject[] pacGommeLst;
+
     
     void Start()
     {
@@ -24,7 +25,8 @@ public class GenerationItemManager : MonoBehaviour
         pacGommeLst = GameObject.FindGameObjectsWithTag("PacGomme");
         if (pacGommeLst.Length == 0)
         {
-            SetPacGommeOnAllRoadCell();
+            Debug.Log("Fin de plateau !");
+            //SetPacGommeOnAllRoadCell();
         }
     }
 
