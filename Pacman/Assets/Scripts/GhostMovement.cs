@@ -11,7 +11,7 @@ public class GhostMovement : MonoBehaviour
     public GhostType ghostType;
 
     public float moveSpeed = 2f;
-    public float snapTolerance = 0.1f;
+    public float snapTolerance = 0.001f;
     public Tilemap roadTilemap;
     public Rigidbody2D rb;
     public Transform pacman;
@@ -19,9 +19,9 @@ public class GhostMovement : MonoBehaviour
     public bool isInHouse = true;
     private Vector2 _targetDirection;
     private Vector2 _lastDirection;
-    
-    private enum GhostState { Locked, Scatter, Chase, Frightened }
-    private GhostState _currentState;
+
+    public enum GhostState { Locked, Scatter, Chase, Frightened }
+    public GhostState _currentState;
     
     public GameObject seeUp;
     public GameObject seeDown;
@@ -68,8 +68,9 @@ public class GhostMovement : MonoBehaviour
             // Si le fantôme est centré sur une tuile, il choisit une nouvelle direction
             if (!CanMoveInDirection(_targetDirection))
             {
-                ChooseNewDirection();
+                
             }
+            ChooseNewDirection();
         }
         rb.linearVelocity = _targetDirection * moveSpeed;
         UpdateSprite();
@@ -179,7 +180,11 @@ public class GhostMovement : MonoBehaviour
         }
         else
         {
-            _targetDirection = availableDirections[Random.Range(0, availableDirections.Count)];
+            do
+            {
+                _targetDirection = availableDirections[Random.Range(0, availableDirections.Count)];
+                Debug.Log("j'ai choisi une direction");
+            }while (_targetDirection == _lastDirection);
         }
 
         _lastDirection = _targetDirection;
