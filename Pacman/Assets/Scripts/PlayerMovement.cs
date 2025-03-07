@@ -73,8 +73,9 @@ public class PlayerMovement : MonoBehaviour
         return Vector2.Distance(worldPosition, tileCenter) <= snapTolerance;
     }
 
-    private void SetDirection()
+    public void SetDirection()
     {
+        
         if (Input.GetKey(KeyCode.UpArrow) && CheckIfCellInDirection(Vector2.up))
         {
             target = Vector2.up;

@@ -7,7 +7,7 @@ public class HealthManager : MonoBehaviour
     public int maxHearts = 20;
     public int currentHealth = 3;
 
-    private GameObject[] heartObjects;
+    public GameObject[] heartObjects;
 
     void Start()
     {
@@ -15,7 +15,7 @@ public class HealthManager : MonoBehaviour
         UpdateHearts();
     }
 
-    void InitializeHearts()
+    public void InitializeHearts()
     {
         heartObjects = new GameObject[maxHearts];
 

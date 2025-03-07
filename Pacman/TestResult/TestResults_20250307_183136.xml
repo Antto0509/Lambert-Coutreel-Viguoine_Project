@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<test-run id="2" testcasecount="3" result="Failed(Child)" total="3" passed="0" failed="3" inconclusive="0" skipped="0" asserts="0" engine-version="3.5.0.0" clr-version="4.0.30319.42000" start-time="2025-03-07 17:31:14Z" end-time="2025-03-07 17:31:15Z" duration="0,0747943">
+  <test-suite type="TestSuite" id="1011" name="Pacman" fullname="Pacman" runstate="Runnable" testcasecount="3" result="Failed" site="Child" start-time="2025-03-07 17:31:14Z" end-time="2025-03-07 17:31:15Z" duration="0.074794" total="3" passed="0" failed="3" inconclusive="0" skipped="0" asserts="0">
+    <properties>
+      <property name="platform" value="EditMode" />
+    </properties>
+    <failure>
+      <message><![CDATA[One or more child tests had errors]]></message>
+    </failure>
+    <test-suite type="Assembly" id="1005" name="Assembly-CSharp-Editor.dll" fullname="/home/teo-lambert/Documents/DEV/Lambert-Coutreel-Viguoine_Project/Pacman/Library/ScriptAssemblies/Assembly-CSharp-Editor.dll" runstate="Runnable" testcasecount="3" result="Failed" site="Child" start-time="2025-03-07 17:31:14Z" end-time="2025-03-07 17:31:15Z" duration="0.064219" total="3" passed="0" failed="3" inconclusive="0" skipped="0" asserts="0">
+      <properties>
+        <property name="_PID" value="4395" />
+        <property name="_APPDOMAIN" value="Unity Child Domain" />
+        <property name="platform" value="EditMode" />
+        <property name="EditorOnly" value="True" />
+      </properties>
+      <failure>
+        <message><![CDATA[One or more child tests had errors]]></message>
+      </failure>
+      <test-suite type="TestSuite" id="1006" name="Editor" fullname="Editor" runstate="Runnable" testcasecount="3" result="Failed" site="Child" start-time="2025-03-07 17:31:14Z" end-time="2025-03-07 17:31:15Z" duration="0.048411" total="3" passed="0" failed="3" inconclusive="0" skipped="0" asserts="0">
+        <properties />
+        <failure>
+          <message><![CDATA[One or more child tests had errors]]></message>
+        </failure>
+        <test-suite type="TestFixture" id="1001" name="Health_Test" fullname="Editor.Health_Test" classname="Editor.Health_Test" runstate="Runnable" testcasecount="3" result="Failed" site="Child" start-time="2025-03-07 17:31:14Z" end-time="2025-03-07 17:31:15Z" duration="0.030548" total="3" passed="0" failed="3" inconclusive="0" skipped="0" asserts="0">
+          <properties />
+          <failure>
+            <message><![CDATA[One or more child tests had errors]]></message>
+          </failure>
+          <test-case id="1003" name="Add_Health_DoesNotExceedMaxHearts" fullname="Editor.Health_Test.Add_Health_DoesNotExceedMaxHearts" methodname="Add_Health_DoesNotExceedMaxHearts" classname="Editor.Health_Test" runstate="Runnable" seed="1739731115" result="Failed" label="Error" start-time="2025-03-07 17:31:15Z" end-time="2025-03-07 17:31:15Z" duration="0.009366" asserts="0">
+            <properties>
+              <property name="retryIteration" value="0" />
+              <property name="repeatIteration" value="0" />
+            </properties>
+            <failure>
+              <message><![CDATA[System.NullReferenceException : Object reference not set to an instance of an object]]></message>
+              <stack-trace><![CDATA[  at HealthManager.UpdateHearts () [0x00004] in /home/teo-lambert/Documents/DEV/Lambert-Coutreel-Viguoine_Project/Pacman/Assets/Scripts/HealthManager.cs:33 
+  at HealthManager.AddHealth (System.Int32 newHealth) [0x0001a] in /home/teo-lambert/Documents/DEV/Lambert-Coutreel-Viguoine_Project/Pacman/Assets/Scripts/HealthManager.cs:40 
+  at Editor.Health_Test.Add_Health_DoesNotExceedMaxHearts () [0x00000] in /home/teo-lambert/Documents/DEV/Lambert-Coutreel-Viguoine_Project/Pacman/Assets/Scripts/Editor/Health_Test.cs:41 
+  at (wrapper managed-to-native) System.Reflection.RuntimeMethodInfo.InternalInvoke(System.Reflection.RuntimeMethodInfo,object,object[],System.Exception&)
+  at System.Reflection.RuntimeMethodInfo.Invoke (System.Object obj, System.Reflection.BindingFlags invokeAttr, System.Reflection.Binder binder, System.Object[] parameters, System.Globalization.CultureInfo culture) [0x0006a] in <bf7e539227e344c3be3b5e900f61a062>:0 ]]></stack-trace>
+            </failure>
+          </test-case>
+          <test-case id="1002" name="Add_Health_Test" fullname="Editor.Health_Test.Add_Health_Test" methodname="Add_Health_Test" classname="Editor.Health_Test" runstate="Runnable" seed="345772880" result="Failed" label="Error" start-time="2025-03-07 17:31:15Z" end-time="2025-03-07 17:31:15Z" duration="0.000299" asserts="0">
+            <properties>
+              <property name="retryIteration" value="0" />
+              <property name="repeatIteration" value="0" />
+            </properties>
+            <failure>
+              <message><![CDATA[System.NullReferenceException : Object reference not set to an instance of an object]]></message>
+              <stack-trace><![CDATA[  at HealthManager.UpdateHearts () [0x00004] in /home/teo-lambert/Documents/DEV/Lambert-Coutreel-Viguoine_Project/Pacman/Assets/Scripts/HealthManager.cs:33 
+  at HealthManager.AddHealth (System.Int32 newHealth) [0x0001a] in /home/teo-lambert/Documents/DEV/Lambert-Coutreel-Viguoine_Project/Pacman/Assets/Scripts/HealthManager.cs:40 
+  at Editor.Health_Test.Add_Health_Test () [0x00000] in /home/teo-lambert/Documents/DEV/Lambert-Coutreel-Viguoine_Project/Pacman/Assets/Scripts/Editor/Health_Test.cs:25 
+  at (wrapper managed-to-native) System.Reflection.RuntimeMethodInfo.InternalInvoke(System.Reflection.RuntimeMethodInfo,object,object[],System.Exception&)
+  at System.Reflection.RuntimeMethodInfo.Invoke (System.Object obj, System.Reflection.BindingFlags invokeAttr, System.Reflection.Binder binder, System.Object[] parameters, System.Globalization.CultureInfo culture) [0x0006a] in <bf7e539227e344c3be3b5e900f61a062>:0 ]]></stack-trace>
+            </failure>
+          </test-case>
+          <test-case id="1004" name="Decrease_Health_DoesNotGoBelowZero" fullname="Editor.Health_Test.Decrease_Health_DoesNotGoBelowZero" methodname="Decrease_Health_DoesNotGoBelowZero" classname="Editor.Health_Test" runstate="Runnable" seed="1269849400" result="Failed" label="Error" start-time="2025-03-07 17:31:15Z" end-time="2025-03-07 17:31:15Z" duration="0.000319" asserts="0">
+            <properties>
+              <property name="retryIteration" value="0" />
+              <property name="repeatIteration" value="0" />
+            </properties>
+            <failure>
+              <message><![CDATA[System.NullReferenceException : Object reference not set to an instance of an object]]></message>
+              <stack-trace><![CDATA[  at HealthManager.UpdateHearts () [0x00004] in /home/teo-lambert/Documents/DEV/Lambert-Coutreel-Viguoine_Project/Pacman/Assets/Scripts/HealthManager.cs:33 
+  at HealthManager.DecreaseHealth (System.Int32 newHealth) [0x0001a] in /home/teo-lambert/Documents/DEV/Lambert-Coutreel-Viguoine_Project/Pacman/Assets/Scripts/HealthManager.cs:46 
+  at Editor.Health_Test.Decrease_Health_DoesNotGoBelowZero () [0x00000] in /home/teo-lambert/Documents/DEV/Lambert-Coutreel-Viguoine_Project/Pacman/Assets/Scripts/Editor/Health_Test.cs:51 
+  at (wrapper managed-to-native) System.Reflection.RuntimeMethodInfo.InternalInvoke(System.Reflection.RuntimeMethodInfo,object,object[],System.Exception&)
+  at System.Reflection.RuntimeMethodInfo.Invoke (System.Object obj, System.Reflection.BindingFlags invokeAttr, System.Reflection.Binder binder, System.Object[] parameters, System.Globalization.CultureInfo culture) [0x0006a] in <bf7e539227e344c3be3b5e900f61a062>:0 ]]></stack-trace>
+            </failure>
+            <output><![CDATA[Saving results to: /home/teo-lambert/.config/unity3d/DefaultCompany/Pacman/TestResults.xml
+]]></output>
+          </test-case>
+        </test-suite>
+      </test-suite>
+    </test-suite>
+  </test-suite>
+</test-run>
