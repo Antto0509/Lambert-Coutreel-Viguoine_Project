@@ -19,7 +19,7 @@ MonoBehaviour:
     width: 1920
     height: 985
   m_ShowMode: 4
-  m_Title: Hierarchy
+  m_Title: Game
   m_RootView: {fileID: 8}
   m_MinSize: {x: 875, y: 300}
   m_MaxSize: {x: 10000, y: 10000}
@@ -461,7 +461,11 @@ MonoBehaviour:
     scrollPos: {x: 0, y: 79}
     m_SelectedIDs: c6ed0000
     m_LastClickedID: 60870
+<<<<<<< HEAD
     m_ExpandedIDs: 00000000bab4000000ca9a3bffffff7f
+=======
+    m_ExpandedIDs: 00000000b2b4000000ca9a3bffffff7f
+>>>>>>> origin/antoine
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
@@ -490,7 +494,11 @@ MonoBehaviour:
     scrollPos: {x: 0, y: 0}
     m_SelectedIDs: 
     m_LastClickedID: 0
+<<<<<<< HEAD
     m_ExpandedIDs: 00000000bab4000000ca9a3bffffff7f
+=======
+    m_ExpandedIDs: 00000000b2b4000000ca9a3bffffff7f
+>>>>>>> origin/antoine
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
@@ -1242,7 +1250,11 @@ MonoBehaviour:
   m_AudioPlay: 0
   m_DebugDrawModesUseInteractiveLightBakingData: 0
   m_Position:
+<<<<<<< HEAD
     m_Target: {x: -0.04609233, y: 1.042682, z: -0.13726115}
+=======
+    m_Target: {x: -0.6909972, y: -0.93824273, z: 0.107121795}
+>>>>>>> origin/antoine
     speed: 2
     m_Value: {x: 1.7162677, y: -0.28421292, z: 0.021927262}
   m_RenderMode: 0
@@ -1294,7 +1306,11 @@ MonoBehaviour:
     speed: 2
     m_Value: {x: 0, y: 0, z: 0, w: 1}
   m_Size:
+<<<<<<< HEAD
     m_Target: 14.674578
+=======
+    m_Target: 11.244794
+>>>>>>> origin/antoine
     speed: 2
     m_Value: 8.123882
   m_Ortho:
