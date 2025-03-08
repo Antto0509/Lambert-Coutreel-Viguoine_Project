@@ -136,7 +136,6 @@ GameObject:
   - component: {fileID: 170735146}
   - component: {fileID: 170735145}
   - component: {fileID: 170735144}
-  - component: {fileID: 170735143}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -144,25 +143,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &170735143
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 170735142}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 03e546c2237f02afbbb8a8d73f213c77, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  width: 40
-  height: 40
-  iterations: 5
-  wallTile: {fileID: 0}
-  pathTile: {fileID: 0}
-  pointTile: {fileID: 0}
-  tilemap: {fileID: 0}
 --- !u!114 &170735144
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -11899,7 +11879,7 @@ Transform:
   m_GameObject: {fileID: 1184232064}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 10.99, y: -0.60504687, z: 0.012848356}
+  m_LocalPosition: {x: 10.5, y: -0.5, z: 0.012848356}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -13548,7 +13528,7 @@ Transform:
   m_GameObject: {fileID: 1975558019}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -9.02, y: -0.60504687, z: 0.012848356}
+  m_LocalPosition: {x: -8.5, y: -0.5, z: 0.012848356}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -13817,6 +13797,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 1466648227}
     - target: {fileID: 8070580318483744838, guid: 39acbab730b50714abc89a28fcca7a32, type: 3}
+      propertyPath: sortieStatus
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 8070580318483744838, guid: 39acbab730b50714abc89a28fcca7a32, type: 3}
       propertyPath: circleCollider
       value: 
       objectReference: {fileID: 7443816270216397569}
@@ -13908,7 +13892,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 1077931115523406571, guid: a9e6ee2a3941c32439840b4f72d599f0, type: 3}
       propertyPath: m_IsTrigger
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1342223520754411389, guid: a9e6ee2a3941c32439840b4f72d599f0, type: 3}
       propertyPath: m_LocalScale.x
@@ -14170,7 +14154,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8038166739465917665, guid: 1c9f04a3066f47541ab4a420f85681ea, type: 3}
       propertyPath: m_IsTrigger
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8548077653332038591, guid: 1c9f04a3066f47541ab4a420f85681ea, type: 3}
       propertyPath: Point
@@ -14377,7 +14361,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6722037108133499015, guid: ee80f47fccccb4647ad65ce9bfbf78aa, type: 3}
       propertyPath: m_IsTrigger
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8762479154849250625, guid: ee80f47fccccb4647ad65ce9bfbf78aa, type: 3}
       propertyPath: Point

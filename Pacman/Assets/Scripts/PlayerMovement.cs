@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.Serialization;
@@ -21,7 +22,7 @@ public class PlayerMovement : MonoBehaviour
     
     public Animator animator;
     
-    public CircleCollider2D collider;
+    public new CircleCollider2D collider;
     
     private Vector2 movement;
     
@@ -33,7 +34,7 @@ public class PlayerMovement : MonoBehaviour
     
     public GameObject Sortie2;
     
-    public bool inTp;
+    public GameObject SortieFin;
 
     private void Start()
     {
@@ -143,18 +144,29 @@ public class PlayerMovement : MonoBehaviour
             StartCoroutine(Death());
         }
 
-        if (other.CompareTag("Sortie") && !inTp)
-        {
-            inTp = true;
-            transform.position = other.transform.position == Sortie1.transform.position ? Sortie2.transform.position : Sortie1.transform.position;
-        }
-    }
-    
-    private void OnTriggerExit2D(Collider2D other)
-    {
         if (other.CompareTag("Sortie"))
         {
-            inTp = false;
+            if (SortieFin != other.gameObject && other.transform.position == Sortie1.transform.position)
+            {
+                transform.position = Sortie2.transform.position;
+                SortieFin = Sortie2;
+            }
+            else
+            {
+                if (SortieFin != other.gameObject && other.transform.position == Sortie2.transform.position)
+                {
+                    transform.position = Sortie1.transform.position;
+                    SortieFin = Sortie1;
+                }
+            }
+        }
+    }
+
+    private void OnTriggerExit2D(Collider2D other)
+    {
+        if (other.CompareTag("Sortie") && SortieFin == other.gameObject)
+        {
+            SortieFin = null;
         }
     }
 

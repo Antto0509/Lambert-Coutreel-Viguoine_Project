@@ -25,8 +25,8 @@ public class GenerationItemManager : MonoBehaviour
         pacGommeLst = GameObject.FindGameObjectsWithTag("PacGomme");
         if (pacGommeLst.Length == 0)
         {
-            Debug.Log("Fin de plateau !");
-            //SetPacGommeOnAllRoadCell();
+            // Debug.Log("Fin de plateau !");
+            SetPacGommeOnAllRoadCell();
         }
     }
 
