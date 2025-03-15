@@ -9,6 +9,7 @@ TagManager:
   - SpawnAreaGhost
   - Road
   - Exit
+  - SuperPacGomme
   layers:
   - Default
   - TransparentFX

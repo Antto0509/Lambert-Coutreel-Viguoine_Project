@@ -1,8 +1,6 @@
-using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Serialization;
 using UnityEngine.Tilemaps;
 using Random = UnityEngine.Random;
 
@@ -15,7 +13,6 @@ public class GhostMovement : MonoBehaviour
     public float snapTolerance = 0.001f;
     public Tilemap roadTilemap;
     public Rigidbody2D rb;
-    public Transform pacman;
     public Transform respawnPointGhost;
     public bool isInHouse = true;
     private Vector2 _targetDirection;
@@ -26,8 +23,15 @@ public class GhostMovement : MonoBehaviour
     public GameObject seeLeft;
     public GameObject seeRight;
     
+    public GameObject beChasingSeeUp;
+    public GameObject beChasingSeeDown;
+    public GameObject beChasingSeeLeft;
+    public GameObject beChasingSeeRight;
+    
     public GameObject pointSpawn;
     public GameObject pointSortie;
+    
+    public PlayerMovement playerMovement;
 
     public int sortieStatus = 0;
 
@@ -41,6 +45,7 @@ public class GhostMovement : MonoBehaviour
     
     public bool wantToExit = false;
     public bool wait = false;
+    public bool dead = false;
     
     /// <summary>
     /// Initialise le fantôme.
@@ -71,17 +76,48 @@ public class GhostMovement : MonoBehaviour
             MoveInsideHouse();
             return;
         }
+
+        if (dead)
+        {
+            Death();
+        }
         
         // Si le fantôme est centré sur une tuile, il choisit une nouvelle direction
-        if (IsCenteredOnTile() && !wait)
+        if (IsCenteredOnTile() && !wait && !dead && !isInHouse)
         {
             ChooseNewDirection();
-            StartCoroutine(WaitOneSecond()); // wait 1 second
+            StartCoroutine(WaitOneSecond()); // on attend 0.1s pour eviter que le fantomme change plusieur fois de choix sur le meme croisement
         }
         rb.linearVelocity = _targetDirection * moveSpeed;
         UpdateSprite();
     }
 
+    private void Death()
+    {
+        seeUp.SetActive(false);
+        seeDown.SetActive(true);
+        seeLeft.SetActive(false);
+        seeRight.SetActive(false);
+        beChasingSeeUp.SetActive(false);
+        beChasingSeeDown.SetActive(false);
+        beChasingSeeLeft.SetActive(false);
+        beChasingSeeRight.SetActive(false);
+            
+        circleCollider.enabled = false;
+        transform.position = respawnPointGhost.position;
+        StartCoroutine(ReleaseFromHouse());
+        _targetDirection = Vector2.zero;
+        _lastDirection = Vector2.zero;
+        isInHouse = true;
+        dead = false;
+        circleCollider.enabled = true;
+    }
+
+
+    /// <summary>
+    /// Methode qui tourne en paralelle du code, ici elle attend 0.1s pour eviter que le fantomme change de choix plusieur fois au meme croisement
+    /// </summary>
+    /// <returns>Coroutine. </returns>
     private IEnumerator WaitOneSecond()
     {
         wait = true;
@@ -217,6 +253,13 @@ public class GhostMovement : MonoBehaviour
         _lastDirection = _targetDirection;
     }
 
+    
+    /// <summary>
+    /// Met a jour ma liste des direction disponible pour que le fantome ne retourne pas en arière ou qu'il reste dans la meme direction, on veux qu'il change a chaque croisement pour utiliser toute
+    /// la place qu'il y a sur le plateau
+    /// </summary>
+    /// <param name="directions">Liste de direction possible</param>
+    /// <returns>directions</returns>
     private List<Vector2> MajAvalableDirections(List<Vector2> directions)
     {
         if (_lastDirection == Vector2.up || _lastDirection == Vector2.down)
@@ -240,34 +283,110 @@ public class GhostMovement : MonoBehaviour
     {
         if (_targetDirection == Vector2.right)
         {
-            seeUp.SetActive(false);
-            seeDown.SetActive(false);
-            seeLeft.SetActive(false);
-            seeRight.SetActive(true);
+            if (playerMovement.hunter)
+            {
+                seeUp.SetActive(false);
+                seeDown.SetActive(false);
+                seeLeft.SetActive(false);
+                seeRight.SetActive(false);
+                beChasingSeeUp.SetActive(false);
+                beChasingSeeDown.SetActive(false);
+                beChasingSeeLeft.SetActive(false);
+                beChasingSeeRight.SetActive(true);
+            }
+            else
+            {
+                seeUp.SetActive(false);
+                seeDown.SetActive(false);
+                seeLeft.SetActive(false);
+                seeRight.SetActive(true);
+                beChasingSeeUp.SetActive(false);
+                beChasingSeeDown.SetActive(false);
+                beChasingSeeLeft.SetActive(false);
+                beChasingSeeRight.SetActive(false);
+            }
         }
         else if (_targetDirection == Vector2.left)
         {
-            seeUp.SetActive(false);
-            seeDown.SetActive(false);
-            seeLeft.SetActive(true);
-            seeRight.SetActive(false);
+            if (playerMovement.hunter)
+            {
+                seeUp.SetActive(false);
+                seeDown.SetActive(false);
+                seeLeft.SetActive(false);
+                seeRight.SetActive(false);
+                beChasingSeeUp.SetActive(false);
+                beChasingSeeDown.SetActive(false);
+                beChasingSeeLeft.SetActive(true);
+                beChasingSeeRight.SetActive(false);
+            }
+            else
+            {
+                seeUp.SetActive(false);
+                seeDown.SetActive(false);
+                seeLeft.SetActive(true);
+                seeRight.SetActive(false);
+                beChasingSeeUp.SetActive(false);
+                beChasingSeeDown.SetActive(false);
+                beChasingSeeLeft.SetActive(false);
+                beChasingSeeRight.SetActive(false);
+            }
         }
         else if (_targetDirection == Vector2.up)
         {
-            seeUp.SetActive(true);
-            seeDown.SetActive(false);
-            seeLeft.SetActive(false);
-            seeRight.SetActive(false);
+            if (playerMovement.hunter)
+            {
+                seeUp.SetActive(false);
+                seeDown.SetActive(false);
+                seeLeft.SetActive(false);
+                seeRight.SetActive(false);
+                beChasingSeeUp.SetActive(true);
+                beChasingSeeDown.SetActive(false);
+                beChasingSeeLeft.SetActive(false);
+                beChasingSeeRight.SetActive(false);
+            }
+            else
+            {
+                seeUp.SetActive(true);
+                seeDown.SetActive(false);
+                seeLeft.SetActive(false);
+                seeRight.SetActive(false);
+                beChasingSeeUp.SetActive(false);
+                beChasingSeeDown.SetActive(false);
+                beChasingSeeLeft.SetActive(false);
+                beChasingSeeRight.SetActive(false);
+            }
         }
         else if (_targetDirection == Vector2.down)
         {
-            seeUp.SetActive(false);
-            seeDown.SetActive(true);
-            seeLeft.SetActive(false);
-            seeRight.SetActive(false);
+            if (playerMovement.hunter)
+            {
+                seeUp.SetActive(false);
+                seeDown.SetActive(false);
+                seeLeft.SetActive(false);
+                seeRight.SetActive(false);
+                beChasingSeeUp.SetActive(false);
+                beChasingSeeDown.SetActive(true);
+                beChasingSeeLeft.SetActive(false);
+                beChasingSeeRight.SetActive(false);
+            }
+            else
+            {
+                seeUp.SetActive(false);
+                seeDown.SetActive(true);
+                seeLeft.SetActive(false);
+                seeRight.SetActive(false);
+                beChasingSeeUp.SetActive(false);
+                beChasingSeeDown.SetActive(false);
+                beChasingSeeLeft.SetActive(false);
+                beChasingSeeRight.SetActive(false);
+            }
         }
     }
 
+    /// <summary>
+    /// Methode propre a unity qui detecte l'entrée dans un trigger
+    /// </summary>
+    /// <param name="other">Le Collider du triger dans le quelle on entre</param>
     private void OnTriggerEnter2D(Collider2D other)
     {
         if (other.CompareTag("Exit"))
@@ -289,7 +408,11 @@ public class GhostMovement : MonoBehaviour
             }
         }
     }
-
+    
+    /// <summary>
+    /// Methode propre a unity qui detecte la sortie d'un trigger
+    /// </summary>
+    /// <param name="other">Le Collider du triger du quelle on est sorti</param>
     private void OnTriggerExit2D(Collider2D other)
     {
         if (other.CompareTag("Exit") && SortieFin == other.gameObject)

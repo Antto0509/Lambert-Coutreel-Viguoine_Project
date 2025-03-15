@@ -35,6 +35,8 @@ public class PlayerMovement : MonoBehaviour
     public GameObject Sortie2;
     
     public GameObject SortieFin;
+    
+    public bool hunter = false;
 
     private void Start()
     {
@@ -139,9 +141,23 @@ public class PlayerMovement : MonoBehaviour
             Destroy(other.gameObject);
         }
         
+        if (other.CompareTag("SuperPacGomme"))
+        {
+            scoreManager.AddScore(50);
+            Destroy(other.gameObject);
+            StartCoroutine(HuntingPhase());
+        }
+        
         if (other.CompareTag("Ghost"))
         {
-            StartCoroutine(Death());
+            if (!hunter)
+            {
+                StartCoroutine(Death());
+            }
+            else
+            {
+                other.gameObject.GetComponent<GhostMovement>().dead = true;
+            }
         }
 
         if (other.CompareTag("Exit"))
@@ -170,6 +186,17 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 
+    private IEnumerator HuntingPhase()
+    {
+        hunter = true;
+        moveSpeed = 6.0f;
+        
+        yield return new WaitForSeconds(10f);
+        
+        hunter = false;
+        moveSpeed = 5.0f;
+    }
+    
     private IEnumerator Death()
     {
         target = Vector2.zero;
