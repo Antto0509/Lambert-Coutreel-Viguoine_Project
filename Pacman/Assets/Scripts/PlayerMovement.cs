@@ -144,7 +144,7 @@ public class PlayerMovement : MonoBehaviour
             StartCoroutine(Death());
         }
 
-        if (other.CompareTag("Sortie"))
+        if (other.CompareTag("Exit"))
         {
             if (SortieFin != other.gameObject && other.transform.position == Sortie1.transform.position)
             {
@@ -164,7 +164,7 @@ public class PlayerMovement : MonoBehaviour
 
     private void OnTriggerExit2D(Collider2D other)
     {
-        if (other.CompareTag("Sortie") && SortieFin == other.gameObject)
+        if (other.CompareTag("Exit") && SortieFin == other.gameObject)
         {
             SortieFin = null;
         }

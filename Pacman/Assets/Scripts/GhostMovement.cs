@@ -20,9 +20,6 @@ public class GhostMovement : MonoBehaviour
     public bool isInHouse = true;
     private Vector2 _targetDirection;
     private Vector2 _lastDirection;
-
-    public enum GhostState { Locked, Scatter, Chase, Frightened }
-    public GhostState _currentState;
     
     public GameObject seeUp;
     public GameObject seeDown;
@@ -31,7 +28,6 @@ public class GhostMovement : MonoBehaviour
     
     public GameObject pointSpawn;
     public GameObject pointSortie;
-    public GameObject point;
 
     public int sortieStatus = 0;
 
@@ -44,6 +40,7 @@ public class GhostMovement : MonoBehaviour
     public CircleCollider2D circleCollider;
     
     public bool wantToExit = false;
+    public bool wait = false;
     
     /// <summary>
     /// Initialise le fantôme.
@@ -55,12 +52,10 @@ public class GhostMovement : MonoBehaviour
 
         if (ghostType == GhostType.Blinky)
         {
-            _currentState = GhostState.Scatter;
             isInHouse = false;
         }
         else
         {
-            _currentState = GhostState.Locked;
             StartCoroutine(ReleaseFromHouse());
         }
         UpdateSprite();
@@ -78,12 +73,20 @@ public class GhostMovement : MonoBehaviour
         }
         
         // Si le fantôme est centré sur une tuile, il choisit une nouvelle direction
-        if (IsCenteredOnTile()) //  && !CanChangeDirection(_targetDirection)
+        if (IsCenteredOnTile() && !wait)
         {
             ChooseNewDirection();
+            StartCoroutine(WaitOneSecond()); // wait 1 second
         }
         rb.linearVelocity = _targetDirection * moveSpeed;
         UpdateSprite();
+    }
+
+    private IEnumerator WaitOneSecond()
+    {
+        wait = true;
+        yield return new WaitForSecondsRealtime(0.1f);
+        wait = false;
     }
 
     /// <summary>
@@ -99,20 +102,14 @@ public class GhostMovement : MonoBehaviour
             GhostType.Clyde => 15f,
             _ => 0f
         };
-
-        Debug.Log("j'attend");
         
         yield return new WaitForSeconds(delay);
         wantToExit = true;
         
-        Debug.Log("j'attend plus");
-        
         circleCollider.isTrigger = true;
         
-        while (sortieStatus < 4)
+        while (isInHouse)
         {
-            Debug.Log("While");
-            
             yield return new WaitForSeconds(1);
             
             switch (sortieStatus)
@@ -135,7 +132,6 @@ public class GhostMovement : MonoBehaviour
                     break;
                 default:
                     moveSpeed = 5f;
-                    _currentState = GhostState.Scatter;
                     isInHouse = false;
                     ChooseNewDirection();
                     break;
@@ -210,16 +206,8 @@ public class GhostMovement : MonoBehaviour
 
         if (availableDirections.Count > 2)
         {
-            availableDirections.Remove(-_lastDirection);
-        }
-
-        if (_currentState == GhostState.Chase)
-        {
-            _targetDirection = GetChaseDirection(availableDirections);
-        }
-        else if (_currentState == GhostState.Frightened)
-        {
-            _targetDirection = GetFarthestDirectionFromPacman(availableDirections);
+            availableDirections = MajAvalableDirections(availableDirections);
+            _targetDirection = availableDirections[Random.Range(0, availableDirections.Count)];
         }
         else
         {
@@ -229,73 +217,20 @@ public class GhostMovement : MonoBehaviour
         _lastDirection = _targetDirection;
     }
 
-    /// <summary>
-    /// Retourne la direction à suivre pour chasser Pacman.
-    /// </summary>
-    /// <param name="directions"> Liste des directions possibles. </param>
-    /// <returns> La direction à suivre pour chasser Pacman. </returns>
-    private Vector2 GetChaseDirection(List<Vector2> directions)
+    private List<Vector2> MajAvalableDirections(List<Vector2> directions)
     {
-        switch (ghostType)
+        if (_lastDirection == Vector2.up || _lastDirection == Vector2.down)
         {
-            case GhostType.Blinky: // Chasse Pacman
-                return GetBestDirectionToPoint(pacman.position, directions);
-            case GhostType.Pinky: // Cible 4 cases devant Pacman
-                return GetBestDirectionToPoint((Vector2)pacman.position + (Vector2)pacman.up * 4, directions);
-            case GhostType.Inky: // Cible la position symétrique de Blinky par rapport à Pacman
-                return Random.value > 0.5f ? GetBestDirectionToPoint(pacman.position, directions) : GetFarthestDirectionFromPacman(directions);
-            case GhostType.Clyde: // Chasse Pacman si distance > 8, sinon retourne à la maison
-                return Vector2.Distance(transform.position, pacman.position) > 8f ? GetBestDirectionToPoint(pacman.position, directions) : GetBestDirectionToPoint(respawnPointGhost.position, directions);
-            default:
-                return directions[Random.Range(0, directions.Count)];
-        }
-    }
-
-    /// <summary>
-    /// Retourne la direction la plus courte pour atteindre un point donné.
-    /// </summary>
-    /// <param name="target"> Position cible. </param>
-    /// <param name="directions"> Liste des directions possibles. </param>
-    /// <returns> La direction la plus courte pour atteindre le point donné. </returns>
-    private Vector2 GetBestDirectionToPoint(Vector2 target, List<Vector2> directions)
-    {
-        Vector2 bestDirection = directions[0];
-        float shortestDistance = float.MaxValue;
-
-        foreach (Vector2 dir in directions)
+            directions.Remove(Vector2.up);
+            directions.Remove(Vector2.down);
+        } 
+        else
         {
-            Vector2 nextPosition = (Vector2)transform.position + dir;
-            float distance = Vector2.Distance(nextPosition, target);
-            if (distance < shortestDistance)
-            {
-                shortestDistance = distance;
-                bestDirection = dir;
-            }
+            directions.Remove(Vector2.right);
+            directions.Remove(Vector2.left);
         }
-        return bestDirection;
-    }
-
-    /// <summary>
-    /// Retourne la direction la plus éloignée de Pacman.
-    /// </summary>
-    /// <param name="directions"> Liste des directions possibles. </param>
-    /// <returns> La direction la plus éloignée de Pacman. </returns>
-    private Vector2 GetFarthestDirectionFromPacman(List<Vector2> directions)
-    {
-        Vector2 bestDirection = directions[0];
-        float longestDistance = 0f;
-
-        foreach (Vector2 dir in directions)
-        {
-            Vector2 nextPosition = (Vector2)transform.position + dir;
-            float distance = Vector2.Distance(nextPosition, pacman.position);
-            if (distance > longestDistance)
-            {
-                longestDistance = distance;
-                bestDirection = dir;
-            }
-        }
-        return bestDirection;
+        
+        return directions;
     }
 
     /// <summary>
@@ -335,7 +270,7 @@ public class GhostMovement : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D other)
     {
-        if (other.CompareTag("Sortie"))
+        if (other.CompareTag("Exit"))
         {
             if (SortieFin != other.gameObject && other.transform.position == Sortie1.transform.position)
             {
@@ -357,7 +292,7 @@ public class GhostMovement : MonoBehaviour
 
     private void OnTriggerExit2D(Collider2D other)
     {
-        if (other.CompareTag("Sortie") && SortieFin == other.gameObject)
+        if (other.CompareTag("Exit") && SortieFin == other.gameObject)
         {
             SortieFin = null;
         }
