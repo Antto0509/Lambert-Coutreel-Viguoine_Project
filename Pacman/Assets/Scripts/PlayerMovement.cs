@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using UnityEngine;
+using UnityEngine.Serialization;
 using UnityEngine.Tilemaps;
 
 public class PlayerMovement : MonoBehaviour
@@ -21,13 +22,23 @@ public class PlayerMovement : MonoBehaviour
     
     public Animator animator;
     
-    public CircleCollider2D collider;
+    public new CircleCollider2D collider;
     
     private Vector2 movement;
     
     private Vector2 target;
     
     private Vector3Int currentCell;
+
+    public GameObject Sortie1;
+    
+    public GameObject Sortie2;
+    
+    public GameObject SortieFin;
+    
+    public bool hunter = false;
+
+    public Vector3Int targetPosition;
 
     private void Start()
     {
@@ -56,7 +67,7 @@ public class PlayerMovement : MonoBehaviour
         }
         
         // Calculer la position cible
-        Vector3Int targetPosition = roadTilemap.WorldToCell(transform.position + (Vector3)direction);
+        targetPosition = roadTilemap.WorldToCell(transform.position + (Vector3)direction);
 
         // Vérifie si la case correspondante dans la Tilemap a une tuile
         return roadTilemap.HasTile(targetPosition);
@@ -75,6 +86,7 @@ public class PlayerMovement : MonoBehaviour
 
     private void SetDirection()
     {
+        
         if (Input.GetKey(KeyCode.UpArrow) && CheckIfCellInDirection(Vector2.up))
         {
             target = Vector2.up;
@@ -123,14 +135,6 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 
-    private void OnCollisionEnter2D(Collision2D other)
-    {
-        if (other.gameObject.CompareTag("Ghost"))
-        {
-            StartCoroutine(Death());
-        }
-    }
-
     private void OnTriggerEnter2D(Collider2D other)
     {
         if (other.CompareTag("PacGomme"))
@@ -138,8 +142,63 @@ public class PlayerMovement : MonoBehaviour
             scoreManager.AddScore(10);
             Destroy(other.gameObject);
         }
+        
+        if (other.CompareTag("SuperPacGomme"))
+        {
+            scoreManager.AddScore(50);
+            Destroy(other.gameObject);
+            StartCoroutine(HuntingPhase());
+        }
+        
+        if (other.CompareTag("Ghost"))
+        {
+            if (!hunter)
+            {
+                StartCoroutine(Death());
+            }
+            else
+            {
+                other.gameObject.GetComponent<GhostMovement>().dead = true;
+            }
+        }
+
+        if (other.CompareTag("Exit"))
+        {
+            if (SortieFin != other.gameObject && other.transform.position == Sortie1.transform.position)
+            {
+                transform.position = Sortie2.transform.position;
+                SortieFin = Sortie2;
+            }
+            else
+            {
+                if (SortieFin != other.gameObject && other.transform.position == Sortie2.transform.position)
+                {
+                    transform.position = Sortie1.transform.position;
+                    SortieFin = Sortie1;
+                }
+            }
+        }
     }
 
+    private void OnTriggerExit2D(Collider2D other)
+    {
+        if (other.CompareTag("Exit") && SortieFin == other.gameObject)
+        {
+            SortieFin = null;
+        }
+    }
+
+    private IEnumerator HuntingPhase()
+    {
+        hunter = true;
+        moveSpeed = 6.0f;
+        
+        yield return new WaitForSeconds(10f);
+        
+        hunter = false;
+        moveSpeed = 5.0f;
+    }
+    
     private IEnumerator Death()
     {
         target = Vector2.zero;
@@ -173,5 +232,12 @@ public class PlayerMovement : MonoBehaviour
     {
         var currentState = animator.GetCurrentAnimatorStateInfo(0);
         return currentState.IsName(animationName) && currentState.normalizedTime < 1.0f;
+    }
+
+    public void Restart()
+    {
+        transform.position = RespawnPoint.transform.position;
+        AlignToTileCenter();
+        target = Vector2.zero;
     }
 }

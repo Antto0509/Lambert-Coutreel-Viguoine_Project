@@ -18,4 +18,9 @@ public class ScoreManager : MonoBehaviour
         score += scoreToAdd;
         scoreText.text = score.ToString();
     }
+
+    public void ResetScore()
+    {
+        score = 0;
+    }
 }

@@ -3,7 +3,13 @@
 --- !u!78 &1
 TagManager:
   serializedVersion: 3
-  tags: []
+  tags:
+  - Ghost
+  - PacGomme
+  - SpawnAreaGhost
+  - Road
+  - Exit
+  - SuperPacGomme
   layers:
   - Default
   - TransparentFX

@@ -1,7 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Serialization;
 using UnityEngine.Tilemaps;
 using Random = UnityEngine.Random;
 
@@ -11,45 +10,69 @@ public class GhostMovement : MonoBehaviour
     public GhostType ghostType;
 
     public float moveSpeed = 2f;
-    public float snapTolerance = 0.1f;
+    public float snapTolerance = 0.001f;
     public Tilemap roadTilemap;
     public Rigidbody2D rb;
-    public Transform pacman;
-    public Transform respawnPointGhost;
     public bool isInHouse = true;
-    private Vector2 _targetDirection;
-    private Vector2 _lastDirection;
-    
-    private enum GhostState { Locked, Scatter, Chase, Frightened }
-    private GhostState _currentState;
+    public Vector2 _targetDirection;
+    public Vector2 _lastDirection;
     
     public GameObject seeUp;
     public GameObject seeDown;
     public GameObject seeLeft;
     public GameObject seeRight;
     
+    public GameObject beChasingSeeUp;
+    public GameObject beChasingSeeDown;
+    public GameObject beChasingSeeLeft;
+    public GameObject beChasingSeeRight;
+    
     public GameObject pointSpawn;
-    public GameObject point;
+    public GameObject pointSortie;
+    
+    public Transform respawnPointGhost;
+    
+    public PlayerMovement playerMovement;
 
+    public int sortieStatus = 0;
+
+    public GameObject Sortie1;
+    
+    public GameObject Sortie2;
+
+    public GameObject SortieFin;
+
+    public CircleCollider2D circleCollider;
+    
+    public bool wantToExit = false;
+    public bool wait = false;
+    public bool dead = false;
+    
     /// <summary>
     /// Initialise le fantôme.
     /// </summary>
     private void Start()
     {
+        seeUp.SetActive(false);
+        seeDown.SetActive(true);
+        seeLeft.SetActive(false);
+        seeRight.SetActive(false);
+        beChasingSeeUp.SetActive(false);
+        beChasingSeeDown.SetActive(false);
+        beChasingSeeLeft.SetActive(false);
+        beChasingSeeRight.SetActive(false);
+        
         AlignToTileCenter();
         ChooseNewDirection();
 
         if (ghostType == GhostType.Blinky)
         {
-            _currentState = GhostState.Scatter;
             isInHouse = false;
         }
         else
         {
-            _currentState = GhostState.Locked;
             StartCoroutine(ReleaseFromHouse());
         }
-        UpdateSprite();
     }
 
     /// <summary>
@@ -57,22 +80,60 @@ public class GhostMovement : MonoBehaviour
     /// </summary>
     private void Update()
     {
-        if (isInHouse)
+        if (isInHouse && !wantToExit)
         {
             MoveInsideHouse();
             return;
         }
 
-        if (IsCenteredOnTile())
+        if (dead)
         {
-            // Si le fantôme est centré sur une tuile, il choisit une nouvelle direction
-            if (!CanMoveInDirection(_targetDirection))
-            {
-                ChooseNewDirection();
-            }
+            Death();
+            StartCoroutine(ReleaseFromHouse());
+        }
+        
+        // Si le fantôme est centré sur une tuile, il choisit une nouvelle direction
+        if (IsCenteredOnTile() && !wait && !dead && !isInHouse)
+        {
+            ChooseNewDirection();
+            StartCoroutine(WaitOneSecond()); // on attend 0.1s pour eviter que le fantomme change plusieur fois de choix sur le meme croisement
         }
         rb.linearVelocity = _targetDirection * moveSpeed;
         UpdateSprite();
+    }
+
+    private void Death()
+    {
+        seeUp.SetActive(false);
+        seeDown.SetActive(true);
+        seeLeft.SetActive(false);
+        seeRight.SetActive(false);
+        beChasingSeeUp.SetActive(false);
+        beChasingSeeDown.SetActive(false);
+        beChasingSeeLeft.SetActive(false);
+        beChasingSeeRight.SetActive(false);
+            
+        circleCollider.enabled = false;
+        transform.position = respawnPointGhost.position;
+        _targetDirection = Vector2.zero;
+        _lastDirection = Vector2.zero;
+        sortieStatus = 0;
+        isInHouse = true;
+        wantToExit = true;
+        circleCollider.enabled = true;
+        dead = false;
+    }
+
+
+    /// <summary>
+    /// Methode qui tourne en paralelle du code, ici elle attend 0.1s pour eviter que le fantomme change de choix plusieur fois au meme croisement
+    /// </summary>
+    /// <returns>Coroutine. </returns>
+    private IEnumerator WaitOneSecond()
+    {
+        wait = true;
+        yield return new WaitForSecondsRealtime(0.1f);
+        wait = false;
     }
 
     /// <summary>
@@ -81,8 +142,6 @@ public class GhostMovement : MonoBehaviour
     /// <returns> Coroutine. </returns>
     private IEnumerator ReleaseFromHouse()
     {
-        List<Vector2> directions = new List<Vector2> { Vector2.left, Vector2.right, Vector2.up, Vector2.down };
-        
         float delay = ghostType switch
         {
             GhostType.Pinky => 5f,
@@ -92,17 +151,40 @@ public class GhostMovement : MonoBehaviour
         };
         
         yield return new WaitForSeconds(delay);
+        wantToExit = true;
         
-        // Se déplace vers "pointSpawn" et ensuite vers "point"
-        _targetDirection = GetBestDirectionToPoint(pointSpawn.transform.position, directions);
-        yield return new WaitForSeconds(2f);
-        _targetDirection = GetBestDirectionToPoint(point.transform.position, directions);
-        yield return new WaitForSeconds(2f);
+        circleCollider.isTrigger = true;
         
-        _currentState = GhostState.Scatter;
-        isInHouse = false;
-        
-        ChooseNewDirection();
+        while (isInHouse)
+        {
+            yield return new WaitForSeconds(1);
+            
+            switch (sortieStatus)
+            {
+                case 0:
+                    _targetDirection = pointSpawn.transform.position - transform.position;
+                    moveSpeed = 0.5f;
+                    if (Vector2.Distance(transform.position, pointSpawn.transform.position) <= snapTolerance)
+                    {
+                        sortieStatus += 1;
+                    }
+                    break;
+                case 1:
+                    _targetDirection = pointSortie.transform.position - transform.position;
+                    moveSpeed = 0.5f;
+                    if (Vector2.Distance(transform.position, pointSortie.transform.position) <= snapTolerance)
+                    {
+                        sortieStatus += 1;
+                    }
+                    break;
+                default:
+                    moveSpeed = 5f;
+                    isInHouse = false;
+                    wantToExit = false;
+                    ChooseNewDirection();
+                    break;
+            }
+        }
     }
 
     /// <summary>
@@ -110,7 +192,9 @@ public class GhostMovement : MonoBehaviour
     /// </summary>
     private void MoveInsideHouse()
     {
-        float oscillationSpeed = 1f;
+        wantToExit = false;
+        circleCollider.isTrigger = false;
+        const float oscillationSpeed = 1f;
         transform.position += Vector3.up * (Mathf.Sin(Time.time * oscillationSpeed) * Time.deltaTime);
     }
 
@@ -119,7 +203,7 @@ public class GhostMovement : MonoBehaviour
     /// </summary>
     private void AlignToTileCenter()
     {
-        Vector3Int cellPosition = roadTilemap.WorldToCell(transform.position);
+        var cellPosition = roadTilemap.WorldToCell(transform.position);
         transform.position = roadTilemap.GetCellCenterWorld(cellPosition);
     }
 
@@ -129,9 +213,9 @@ public class GhostMovement : MonoBehaviour
     /// <returns> Vrai si le fantôme est centré sur une tuile, faux sinon. </returns>
     private bool IsCenteredOnTile()
     {
-        Vector3 worldPosition = transform.position;
-        Vector3Int cellPosition = roadTilemap.WorldToCell(worldPosition);
-        Vector3 tileCenter = roadTilemap.GetCellCenterWorld(cellPosition);
+        var worldPosition = transform.position;
+        var cellPosition = roadTilemap.WorldToCell(worldPosition);
+        var tileCenter = roadTilemap.GetCellCenterWorld(cellPosition);
         return Vector2.Distance(worldPosition, tileCenter) <= snapTolerance;
     }
 
@@ -140,42 +224,38 @@ public class GhostMovement : MonoBehaviour
     /// </summary>
     /// <param name="direction"> Direction à vérifier. </param>
     /// <returns> Vrai si le fantôme peut se déplacer dans la direction donnée, faux sinon. </returns>
-    private bool CanMoveInDirection(Vector2 direction)
+    private bool CanChangeDirection(Vector2 direction)
     {
-        Vector3Int targetPosition = roadTilemap.WorldToCell(transform.position + (Vector3)direction);
+        var targetPosition = roadTilemap.WorldToCell(transform.position + (Vector3)direction);
         return roadTilemap.HasTile(targetPosition);
     }
 
     /// <summary>
     /// Choisi une nouvelle direction pour le fantôme.
     /// </summary>
-    private void ChooseNewDirection()
+    public void ChooseNewDirection()
     {
         if (isInHouse) return;
-
+        
         List<Vector2> availableDirections = new List<Vector2>();
         Vector2[] allDirections = { Vector2.left, Vector2.right, Vector2.up, Vector2.down };
 
         foreach (Vector2 dir in allDirections)
         {
-            if (CanMoveInDirection(dir))
+            if (CanChangeDirection(dir))
             {
+                if (dir == -_targetDirection)
+                {
+                    continue;
+                }
                 availableDirections.Add(dir);
             }
         }
 
         if (availableDirections.Count > 2)
         {
-            availableDirections.Remove(-_lastDirection);
-        }
-
-        if (_currentState == GhostState.Chase)
-        {
-            _targetDirection = GetChaseDirection(availableDirections);
-        }
-        else if (_currentState == GhostState.Frightened)
-        {
-            _targetDirection = GetFarthestDirectionFromPacman(availableDirections);
+            availableDirections = MajAvalableDirections(availableDirections);
+            _targetDirection = availableDirections[Random.Range(0, availableDirections.Count)];
         }
         else
         {
@@ -185,73 +265,27 @@ public class GhostMovement : MonoBehaviour
         _lastDirection = _targetDirection;
     }
 
+    
     /// <summary>
-    /// Retourne la direction à suivre pour chasser Pacman.
+    /// Met a jour ma liste des direction disponible pour que le fantome ne retourne pas en arière ou qu'il reste dans la meme direction, on veux qu'il change a chaque croisement pour utiliser toute
+    /// la place qu'il y a sur le plateau
     /// </summary>
-    /// <param name="directions"> Liste des directions possibles. </param>
-    /// <returns> La direction à suivre pour chasser Pacman. </returns>
-    private Vector2 GetChaseDirection(List<Vector2> directions)
+    /// <param name="directions">Liste de direction possible</param>
+    /// <returns>directions</returns>
+    public List<Vector2> MajAvalableDirections(List<Vector2> directions)
     {
-        switch (ghostType)
+        if (_lastDirection == Vector2.up || _lastDirection == Vector2.down)
         {
-            case GhostType.Blinky: // Chasse Pacman
-                return GetBestDirectionToPoint(pacman.position, directions);
-            case GhostType.Pinky: // Cible 4 cases devant Pacman
-                return GetBestDirectionToPoint((Vector2)pacman.position + (Vector2)pacman.up * 4, directions);
-            case GhostType.Inky: // Cible la position symétrique de Blinky par rapport à Pacman
-                return Random.value > 0.5f ? GetBestDirectionToPoint(pacman.position, directions) : GetFarthestDirectionFromPacman(directions);
-            case GhostType.Clyde: // Chasse Pacman si distance > 8, sinon retourne à la maison
-                return Vector2.Distance(transform.position, pacman.position) > 8f ? GetBestDirectionToPoint(pacman.position, directions) : GetBestDirectionToPoint(respawnPointGhost.position, directions);
-            default:
-                return directions[Random.Range(0, directions.Count)];
-        }
-    }
-
-    /// <summary>
-    /// Retourne la direction la plus courte pour atteindre un point donné.
-    /// </summary>
-    /// <param name="target"> Position cible. </param>
-    /// <param name="directions"> Liste des directions possibles. </param>
-    /// <returns> La direction la plus courte pour atteindre le point donné. </returns>
-    private Vector2 GetBestDirectionToPoint(Vector2 target, List<Vector2> directions)
-    {
-        Vector2 bestDirection = directions[0];
-        float shortestDistance = float.MaxValue;
-
-        foreach (Vector2 dir in directions)
+            directions.Remove(Vector2.up);
+            directions.Remove(Vector2.down);
+        } 
+        else
         {
-            Vector2 nextPosition = (Vector2)transform.position + dir;
-            float distance = Vector2.Distance(nextPosition, target);
-            if (distance < shortestDistance)
-            {
-                shortestDistance = distance;
-                bestDirection = dir;
-            }
+            directions.Remove(Vector2.right);
+            directions.Remove(Vector2.left);
         }
-        return bestDirection;
-    }
-
-    /// <summary>
-    /// Retourne la direction la plus éloignée de Pacman.
-    /// </summary>
-    /// <param name="directions"> Liste des directions possibles. </param>
-    /// <returns> La direction la plus éloignée de Pacman. </returns>
-    private Vector2 GetFarthestDirectionFromPacman(List<Vector2> directions)
-    {
-        Vector2 bestDirection = directions[0];
-        float longestDistance = 0f;
-
-        foreach (Vector2 dir in directions)
-        {
-            Vector2 nextPosition = (Vector2)transform.position + dir;
-            float distance = Vector2.Distance(nextPosition, pacman.position);
-            if (distance > longestDistance)
-            {
-                longestDistance = distance;
-                bestDirection = dir;
-            }
-        }
-        return bestDirection;
+        
+        return directions;
     }
 
     /// <summary>
@@ -261,31 +295,141 @@ public class GhostMovement : MonoBehaviour
     {
         if (_targetDirection == Vector2.right)
         {
-            seeUp.SetActive(false);
-            seeDown.SetActive(false);
-            seeLeft.SetActive(false);
-            seeRight.SetActive(true);
+            if (playerMovement.hunter)
+            {
+                seeUp.SetActive(false);
+                seeDown.SetActive(false);
+                seeLeft.SetActive(false);
+                seeRight.SetActive(false);
+                beChasingSeeUp.SetActive(false);
+                beChasingSeeDown.SetActive(false);
+                beChasingSeeLeft.SetActive(false);
+                beChasingSeeRight.SetActive(true);
+            }
+            else
+            {
+                seeUp.SetActive(false);
+                seeDown.SetActive(false);
+                seeLeft.SetActive(false);
+                seeRight.SetActive(true);
+                beChasingSeeUp.SetActive(false);
+                beChasingSeeDown.SetActive(false);
+                beChasingSeeLeft.SetActive(false);
+                beChasingSeeRight.SetActive(false);
+            }
         }
         else if (_targetDirection == Vector2.left)
         {
-            seeUp.SetActive(false);
-            seeDown.SetActive(false);
-            seeLeft.SetActive(true);
-            seeRight.SetActive(false);
+            if (playerMovement.hunter)
+            {
+                seeUp.SetActive(false);
+                seeDown.SetActive(false);
+                seeLeft.SetActive(false);
+                seeRight.SetActive(false);
+                beChasingSeeUp.SetActive(false);
+                beChasingSeeDown.SetActive(false);
+                beChasingSeeLeft.SetActive(true);
+                beChasingSeeRight.SetActive(false);
+            }
+            else
+            {
+                seeUp.SetActive(false);
+                seeDown.SetActive(false);
+                seeLeft.SetActive(true);
+                seeRight.SetActive(false);
+                beChasingSeeUp.SetActive(false);
+                beChasingSeeDown.SetActive(false);
+                beChasingSeeLeft.SetActive(false);
+                beChasingSeeRight.SetActive(false);
+            }
         }
         else if (_targetDirection == Vector2.up)
         {
-            seeUp.SetActive(true);
-            seeDown.SetActive(false);
-            seeLeft.SetActive(false);
-            seeRight.SetActive(false);
+            if (playerMovement.hunter)
+            {
+                seeUp.SetActive(false);
+                seeDown.SetActive(false);
+                seeLeft.SetActive(false);
+                seeRight.SetActive(false);
+                beChasingSeeUp.SetActive(true);
+                beChasingSeeDown.SetActive(false);
+                beChasingSeeLeft.SetActive(false);
+                beChasingSeeRight.SetActive(false);
+            }
+            else
+            {
+                seeUp.SetActive(true);
+                seeDown.SetActive(false);
+                seeLeft.SetActive(false);
+                seeRight.SetActive(false);
+                beChasingSeeUp.SetActive(false);
+                beChasingSeeDown.SetActive(false);
+                beChasingSeeLeft.SetActive(false);
+                beChasingSeeRight.SetActive(false);
+            }
         }
         else if (_targetDirection == Vector2.down)
         {
-            seeUp.SetActive(false);
-            seeDown.SetActive(true);
-            seeLeft.SetActive(false);
-            seeRight.SetActive(false);
+            if (playerMovement.hunter)
+            {
+                seeUp.SetActive(false);
+                seeDown.SetActive(false);
+                seeLeft.SetActive(false);
+                seeRight.SetActive(false);
+                beChasingSeeUp.SetActive(false);
+                beChasingSeeDown.SetActive(true);
+                beChasingSeeLeft.SetActive(false);
+                beChasingSeeRight.SetActive(false);
+            }
+            else
+            {
+                seeUp.SetActive(false);
+                seeDown.SetActive(true);
+                seeLeft.SetActive(false);
+                seeRight.SetActive(false);
+                beChasingSeeUp.SetActive(false);
+                beChasingSeeDown.SetActive(false);
+                beChasingSeeLeft.SetActive(false);
+                beChasingSeeRight.SetActive(false);
+            }
+        }
+    }
+
+    /// <summary>
+    /// Methode propre a unity qui detecte l'entrée dans un trigger
+    /// </summary>
+    /// <param name="other">Le Collider du triger dans le quelle on entre</param>
+    private void OnTriggerEnter2D(Collider2D other)
+    {
+        if (other.CompareTag("Exit"))
+        {
+            if (SortieFin != other.gameObject && other.transform.position == Sortie1.transform.position)
+            {
+                transform.position = Sortie2.transform.position;
+                SortieFin = Sortie2;
+                AlignToTileCenter();
+            }
+            else
+            {
+                if (SortieFin != other.gameObject && other.transform.position == Sortie2.transform.position)
+                {
+                    transform.position = Sortie1.transform.position;
+                    SortieFin = Sortie1;
+                    AlignToTileCenter();
+                }
+            }
+        }
+    }
+    
+    /// <summary>
+    /// Methode propre a unity qui detecte la sortie d'un trigger
+    /// </summary>
+    /// <param name="other">Le Collider du triger du quelle on est sorti</param>
+    private void OnTriggerExit2D(Collider2D other)
+    {
+        if (other.CompareTag("Exit") && SortieFin == other.gameObject)
+        {
+            SortieFin = null;
         }
     }
 }
