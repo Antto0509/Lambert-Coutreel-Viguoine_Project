@@ -88,6 +88,7 @@ public class GhostMovement : MonoBehaviour
         if (dead)
         {
             Death();
+            StartCoroutine(ReleaseFromHouse());
         }
         
         // Si le fantôme est centré sur une tuile, il choisit une nouvelle direction
@@ -113,12 +114,13 @@ public class GhostMovement : MonoBehaviour
             
         circleCollider.enabled = false;
         transform.position = respawnPointGhost.position;
-        StartCoroutine(ReleaseFromHouse());
         _targetDirection = Vector2.zero;
         _lastDirection = Vector2.zero;
+        sortieStatus = 0;
         isInHouse = true;
-        dead = false;
+        wantToExit = true;
         circleCollider.enabled = true;
+        dead = false;
     }
 
 
@@ -177,6 +179,7 @@ public class GhostMovement : MonoBehaviour
                 default:
                     moveSpeed = 5f;
                     isInHouse = false;
+                    wantToExit = false;
                     ChooseNewDirection();
                     break;
             }
