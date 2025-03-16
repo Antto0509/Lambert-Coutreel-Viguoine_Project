@@ -38,6 +38,8 @@ public class PlayerMovement : MonoBehaviour
     
     public bool hunter = false;
 
+    public Vector3Int targetPosition;
+
     private void Start()
     {
         AlignToTileCenter();
@@ -65,7 +67,7 @@ public class PlayerMovement : MonoBehaviour
         }
         
         // Calculer la position cible
-        Vector3Int targetPosition = roadTilemap.WorldToCell(transform.position + (Vector3)direction);
+        targetPosition = roadTilemap.WorldToCell(transform.position + (Vector3)direction);
 
         // Vérifie si la case correspondante dans la Tilemap a une tuile
         return roadTilemap.HasTile(targetPosition);
@@ -82,7 +84,7 @@ public class PlayerMovement : MonoBehaviour
         return Vector2.Distance(worldPosition, tileCenter) <= snapTolerance;
     }
 
-    public void SetDirection()
+    private void SetDirection()
     {
         
         if (Input.GetKey(KeyCode.UpArrow) && CheckIfCellInDirection(Vector2.up))
@@ -230,5 +232,12 @@ public class PlayerMovement : MonoBehaviour
     {
         var currentState = animator.GetCurrentAnimatorStateInfo(0);
         return currentState.IsName(animationName) && currentState.normalizedTime < 1.0f;
+    }
+
+    public void Restart()
+    {
+        transform.position = RespawnPoint.transform.position;
+        AlignToTileCenter();
+        target = Vector2.zero;
     }
 }

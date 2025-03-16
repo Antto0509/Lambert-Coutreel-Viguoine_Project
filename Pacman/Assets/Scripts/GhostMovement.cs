@@ -13,7 +13,6 @@ public class GhostMovement : MonoBehaviour
     public float snapTolerance = 0.001f;
     public Tilemap roadTilemap;
     public Rigidbody2D rb;
-    public Transform respawnPointGhost;
     public bool isInHouse = true;
     public Vector2 _targetDirection;
     public Vector2 _lastDirection;
@@ -30,6 +29,8 @@ public class GhostMovement : MonoBehaviour
     
     public GameObject pointSpawn;
     public GameObject pointSortie;
+    
+    public Transform respawnPointGhost;
     
     public PlayerMovement playerMovement;
 
@@ -232,7 +233,7 @@ public class GhostMovement : MonoBehaviour
     /// <summary>
     /// Choisi une nouvelle direction pour le fantôme.
     /// </summary>
-    private void ChooseNewDirection()
+    public void ChooseNewDirection()
     {
         if (isInHouse) return;
         

@@ -10,6 +10,8 @@ public class HealthManager : MonoBehaviour
     public int currentHealth = 3;
     
     public GameObject[] heartObjects;
+    
+    public GameManager gameManager;
 
     /// <summary>
     /// Initialise les cœurs et met à jour leur affichage au démarrage du jeu.
@@ -63,5 +65,15 @@ public class HealthManager : MonoBehaviour
     {
         currentHealth = Mathf.Clamp(currentHealth - newHealth, 0, maxHearts);
         UpdateHearts();
+
+        if (currentHealth == 0)
+        {
+            gameManager.GameOver();
+        }
+    }
+
+    public void ResetHeart()
+    {
+        currentHealth = 3;
     }
 }

@@ -580,8 +580,9 @@ MonoBehaviour:
   snapTolerance: 0.1
   roadTilemap: {fileID: 0}
   rb: {fileID: 6177578930732454148}
-  respawnPointGhost: {fileID: 0}
   isInHouse: 0
+  _targetDirection: {x: 0, y: 0}
+  _lastDirection: {x: 0, y: 0}
   seeUp: {fileID: 2268727522338011205}
   seeDown: {fileID: 7458331903745750533}
   seeLeft: {fileID: 976776673105050237}
@@ -590,9 +591,9 @@ MonoBehaviour:
   beChasingSeeDown: {fileID: 7687041010631580794}
   beChasingSeeLeft: {fileID: 7020620041635378902}
   beChasingSeeRight: {fileID: 8325342704300878274}
-  EyesDead: {fileID: 0}
   pointSpawn: {fileID: 0}
   pointSortie: {fileID: 0}
+  respawnPointGhost: {fileID: 0}
   playerMovement: {fileID: 0}
   sortieStatus: 3
   Sortie1: {fileID: 0}

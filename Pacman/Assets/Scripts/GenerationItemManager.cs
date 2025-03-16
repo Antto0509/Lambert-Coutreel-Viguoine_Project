@@ -6,22 +6,18 @@ using UnityEngine.Tilemaps;
 
 public class GenerationItemManager : MonoBehaviour
 {
-    // Tilemap contenant les cellules de la route où les PacGommes seront placées
     public Tilemap roadTilemap;
 
-    // Préfabriqué de la PacGomme normale
     public GameObject pacGommePrefab;
-    // Préfabriqué de la Super PacGomme
     public GameObject SuperPacGommePrefab;
 
-    // Liste des objets PacGomme présents dans la scène
     public List<GameObject> pacGommeLst;
 
-    // Compteur pour limiter le nombre de Super PacGommes générées
     public int SuperPacGommeCount = 0;
     
-    // Compteur de PacGommes générées
     public int PacGommeCount = 0;
+    
+    public GameManager gameManager;
 
     /// <summary>
     /// Initialise la génération des PacGommes sur toutes les cellules de la route au démarrage du jeu.
@@ -50,8 +46,7 @@ public class GenerationItemManager : MonoBehaviour
         pacGommeLst.AddRange(GameObject.FindGameObjectsWithTag("SuperPacGomme"));
         if (pacGommeLst.Count == 0)
         {
-            // Debug.Log("Fin de plateau !");
-            SetPacGommeOnAllRoadCell();
+            gameManager.GameWin();
         }
     }
 
