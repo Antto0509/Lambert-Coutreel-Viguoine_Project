@@ -1,7 +1,7 @@
 # Pac Man
 
 ## Technologies
-- Framework : React
+- Moteur 3D : Unity
 - Plateformes : Windows, Mac, Linux
 
 ## Description
