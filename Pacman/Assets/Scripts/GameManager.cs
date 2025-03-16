@@ -15,18 +15,27 @@ public class GameManager : MonoBehaviour
     public GameObject ghostBlue;
     public GameObject ghostOrange;
     
+    /// <summary>
+    /// Affiche l'écran de défaite et arrête le temps.
+    /// </summary>
     public void GameOver()
     {
         Time.timeScale = 0;
         gameOverUi.SetActive(true);
     }
 
+    /// <summary>
+    /// Affiche l'écran de victoire et arrête le temps.
+    /// </summary>
     public void GameWin()
     {
         Time.timeScale = 0;
         gameWinUi.SetActive(true);
     }
 
+    /// <summary>
+    /// Réinitialise le jeu à son état initial.
+    /// </summary>
     public void RestartGame()
     {
         gameOverUi.SetActive(false);
@@ -42,6 +51,9 @@ public class GameManager : MonoBehaviour
         RestartGhosts();
     }
 
+    /// <summary>
+    /// Réinitialise les fantômes à leur état initial.
+    /// </summary>
     private void RestartGhosts()
     {
         var ghosts = GameObject.FindGameObjectsWithTag("Ghost");

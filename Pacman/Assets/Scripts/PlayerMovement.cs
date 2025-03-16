@@ -50,43 +50,49 @@ public class PlayerMovement : MonoBehaviour
         SetDirection();
     }
 
+    /// <summary>
+    /// Aligne le joueur au centre de la tuile actuelle.
+    /// </summary>
     private void AlignToTileCenter()
     {
         Vector3Int cellPosition = roadTilemap.WorldToCell(transform.position);
-
         Vector3 tileCenter = roadTilemap.GetCellCenterWorld(cellPosition);
-
         transform.position = tileCenter;
     }
-    
+
+    /// <summary>
+    /// Vérifie si une tuile existe dans la direction donnée.
+    /// </summary>
+    /// <param name="direction">La direction à vérifier.</param>
+    /// <returns>True si une tuile existe dans cette direction, sinon false.</returns>
     private bool CheckIfCellInDirection(Vector2 direction)
     {
         if (!IsCenteredOnTile())
         {
             return false;
         }
-        
-        // Calculer la position cible
-        targetPosition = roadTilemap.WorldToCell(transform.position + (Vector3)direction);
 
-        // Vérifie si la case correspondante dans la Tilemap a une tuile
+        targetPosition = roadTilemap.WorldToCell(transform.position + (Vector3)direction);
         return roadTilemap.HasTile(targetPosition);
     }
-    
+
+    /// <summary>
+    /// Vérifie si le joueur est centré sur une tuile.
+    /// </summary>
+    /// <returns>True si le joueur est centré, sinon false.</returns>
     private bool IsCenteredOnTile()
     {
         Vector3 worldPosition = transform.position;
-
         Vector3Int cellPosition = roadTilemap.WorldToCell(worldPosition);
-
         Vector3 tileCenter = roadTilemap.GetCellCenterWorld(cellPosition);
-
         return Vector2.Distance(worldPosition, tileCenter) <= snapTolerance;
     }
 
+    /// <summary>
+    /// Définit la direction du joueur en fonction des entrées utilisateur.
+    /// </summary>
     private void SetDirection()
     {
-        
         if (Input.GetKey(KeyCode.UpArrow) && CheckIfCellInDirection(Vector2.up))
         {
             target = Vector2.up;
@@ -107,34 +113,40 @@ public class PlayerMovement : MonoBehaviour
             target = Vector2.right;
             SeeForward();
         }
-        
+
         rb.linearVelocity = target * moveSpeed;
     }
 
+    /// <summary>
+    /// Oriente le joueur dans la direction de déplacement.
+    /// </summary>
     private void SeeForward()
     {
         float horizontal = Input.GetAxisRaw("Horizontal");
         float vertical = Input.GetAxisRaw("Vertical");
-        
-        // Vérifier la direction principale
+
         if (horizontal > 0)
         {
-            transform.eulerAngles = new Vector3(0, 0, 0);     
+            transform.eulerAngles = new Vector3(0, 0, 0);
         }
         else if (horizontal < 0)
         {
-            transform.eulerAngles = new Vector3(0, 180, 0);        
+            transform.eulerAngles = new Vector3(0, 180, 0);
         }
         else if (vertical > 0)
-        {   
+        {
             transform.eulerAngles = new Vector3(0, 0, 90);
         }
         else if (vertical < 0)
         {
-            transform.eulerAngles = new Vector3(0, 0, -90);        
+            transform.eulerAngles = new Vector3(0, 0, -90);
         }
     }
 
+    /// <summary>
+    /// Gère les collisions avec d'autres objets.
+    /// </summary>
+    /// <param name="other">Le collider de l'objet entré en collision.</param>
     private void OnTriggerEnter2D(Collider2D other)
     {
         if (other.CompareTag("PacGomme"))
@@ -142,14 +154,14 @@ public class PlayerMovement : MonoBehaviour
             scoreManager.AddScore(10);
             Destroy(other.gameObject);
         }
-        
+
         if (other.CompareTag("SuperPacGomme"))
         {
             scoreManager.AddScore(50);
             Destroy(other.gameObject);
             StartCoroutine(HuntingPhase());
         }
-        
+
         if (other.CompareTag("Ghost"))
         {
             if (!hunter)
@@ -180,6 +192,10 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Gère la sortie de collision avec d'autres objets.
+    /// </summary>
+    /// <param name="other">Le collider de l'objet sorti de collision.</param>
     private void OnTriggerExit2D(Collider2D other)
     {
         if (other.CompareTag("Exit") && SortieFin == other.gameObject)
@@ -188,52 +204,66 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Active la phase de chasse après avoir mangé une Super PacGomme.
+    /// </summary>
     private IEnumerator HuntingPhase()
     {
         hunter = true;
         moveSpeed = 6.0f;
-        
+
         yield return new WaitForSeconds(10f);
-        
+
         hunter = false;
         moveSpeed = 5.0f;
     }
-    
+
+    /// <summary>
+    /// Gère la mort du joueur.
+    /// </summary>
     private IEnumerator Death()
     {
         target = Vector2.zero;
         collider.isTrigger = true;
-        
+
         yield return PlayAnimationAndWait("Death");
-        
+
         transform.position = RespawnPoint.position;
         collider.isTrigger = false;
         AlignToTileCenter();
         healthManager.DecreaseHealth(1);
         animator.Play("PacmanMove");
     }
-    
+
+    /// <summary>
+    /// Joue une animation et attend qu'elle se termine.
+    /// </summary>
+    /// <param name="animationName">Le nom de l'animation à jouer.</param>
     private IEnumerator PlayAnimationAndWait(string animationName)
     {
-        // Lancer l'animation
         animator.Play(animationName);
-        
-        // Attendre que l'animation commence (utile pour les transitions)
         yield return new WaitForEndOfFrame();
 
-        // Attendre que l'animation se termine
         while (IsAnimationPlaying(animationName))
         {
-            yield return null; // Attendre le prochain frame
+            yield return null;
         }
     }
-    
+
+    /// <summary>
+    /// Vérifie si une animation est en cours de lecture.
+    /// </summary>
+    /// <param name="animationName">Le nom de l'animation à vérifier.</param>
+    /// <returns>True si l'animation est en cours, sinon false.</returns>
     private bool IsAnimationPlaying(string animationName)
     {
         var currentState = animator.GetCurrentAnimatorStateInfo(0);
         return currentState.IsName(animationName) && currentState.normalizedTime < 1.0f;
     }
 
+    /// <summary>
+    /// Réinitialise la position et l'état du joueur.
+    /// </summary>
     public void Restart()
     {
         transform.position = RespawnPoint.transform.position;
