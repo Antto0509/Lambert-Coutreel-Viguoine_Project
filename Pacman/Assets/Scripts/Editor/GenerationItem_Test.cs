@@ -9,6 +9,9 @@ namespace Editor
         private GenerationItemManager _generationItemManager;
         private GameObject _gridInstance;
 
+        /// <summary>
+        /// Initialise les objets nécessaires avant chaque test.
+        /// </summary>
         [SetUp]
         public void Setup()
         {
@@ -38,7 +41,7 @@ namespace Editor
             // Vérifie que la Tilemap "Road" a bien été trouvée
             Assert.IsNotNull(_generationItemManager.roadTilemap, "La Tilemap 'Road' n'a pas été trouvée dans la préfab Grid");
 
-            // Charge les autres préfabs
+            // Charge les autres préfabs nécessaires
             _generationItemManager.pacGommePrefab = Resources.Load<GameObject>("Prefabs/PacGomme/PacGomme");
             _generationItemManager.SuperPacGommePrefab = Resources.Load<GameObject>("Prefabs/PacGomme/SuperPacGome");
 
@@ -47,21 +50,29 @@ namespace Editor
             Assert.IsNotNull(_generationItemManager.SuperPacGommePrefab, "SuperPacGommePrefab n'a pas été chargée");
         }
 
+        /// <summary>
+        /// Vérifie que le nombre de Super Pac-Gommes placées est correct.
+        /// </summary>
         [Test]
         public void GenerationItemManagerTest()
         {
+            // Génère les Pac-Gommes sur toutes les cellules de la route
             _generationItemManager.SetPacGommeOnAllRoadCell(true);
 
+            // Vérifie que le nombre de Super Pac-Gommes est bien égal à 5
             Assert.AreEqual(5, _generationItemManager.SuperPacGommeCount);
         }
 
+        /// <summary>
+        /// Vérifie que le nombre de Pac-Gommes normales est correct par rapport aux cellules de la route.
+        /// </summary>
         [Test]
         public void TestCountPacGomme()
         {
             _generationItemManager.SetPacGommeOnAllRoadCell(true);
 
             var countTile = 0;
-            
+
             // Parcourt toutes les positions dans les limites de la Tilemap
             foreach (Vector3Int position in _generationItemManager.roadTilemap.cellBounds.allPositionsWithin)
             {
@@ -71,14 +82,18 @@ namespace Editor
                     countTile++;
                 }
             }
-            
+
+            // Vérifie que le nombre de Pac-Gommes normales correspond au nombre total de tuiles - les Super Pac-Gommes
             Assert.AreEqual(countTile - _generationItemManager.SuperPacGommeCount, _generationItemManager.PacGommeCount);
         }
 
+        /// <summary>
+        /// Nettoie les objets créés après chaque test.
+        /// </summary>
         [TearDown]
         public void TearDown()
         {
-            // Nettoie les objets créés pendant le test avec DestroyImmediate
+            // Détruit les objets créés pendant le test
             if (_generationItemManager != null)
             {
                 Object.DestroyImmediate(_generationItemManager.gameObject);
