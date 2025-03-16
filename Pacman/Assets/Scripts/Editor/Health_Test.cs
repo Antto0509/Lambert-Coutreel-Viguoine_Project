@@ -5,23 +5,19 @@ namespace Editor
 {
     public class Health_Test
     {
-        private HealthManager manager;
+        private HealthManager _healthManager;
 
         [SetUp]
         public void Setup()
         {
             // Créer un objet HealthManager
-            manager = new GameObject("HealthManager").AddComponent<HealthManager>();
-
-            // Configurer le HealthManager
-            manager.maxHearts = 20; // Définir la santé maximale
-            manager.currentHealth = 3; // Définir la santé initiale
+            _healthManager = new GameObject("HealthManager").AddComponent<HealthManager>();
 
             // Simuler heartObjects
-            manager.heartObjects = new GameObject[manager.maxHearts];
-            for (int i = 0; i < manager.maxHearts; i++)
+            _healthManager.heartObjects = new GameObject[_healthManager.maxHearts];
+            for (int i = 0; i < _healthManager.maxHearts; i++)
             {
-                manager.heartObjects[i] = new GameObject("Heart");
+                _healthManager.heartObjects[i] = new GameObject("Heart");
             }
         }
 
@@ -29,43 +25,43 @@ namespace Editor
         public void Add_Health_Test()
         {
             // Act
-            manager.AddHealth(10);
+            _healthManager.AddHealth(10);
 
             // Assert
-            Assert.AreEqual(13, manager.currentHealth); // Vérifier que la santé a augmenté
+            Assert.AreEqual(13, _healthManager.currentHealth); // Vérifier que la santé a augmenté
 
             // Act
-            manager.DecreaseHealth(2);
+            _healthManager.DecreaseHealth(2);
 
             // Assert
-            Assert.AreEqual(11, manager.currentHealth); // Vérifier que la santé a diminué
+            Assert.AreEqual(11, _healthManager.currentHealth); // Vérifier que la santé a diminué
         }
 
         [Test]
         public void Add_Health_DoesNotExceedMaxHearts()
         {
             // Act
-            manager.AddHealth(100); // Essayer d'ajouter plus de santé que maxHearts
+            _healthManager.AddHealth(100); // Essayer d'ajouter plus de santé que maxHearts
 
             // Assert
-            Assert.AreEqual(manager.maxHearts, manager.currentHealth); // La santé ne doit pas dépasser maxHearts
+            Assert.AreEqual(_healthManager.maxHearts, _healthManager.currentHealth); // La santé ne doit pas dépasser maxHearts
         }
 
         [Test]
         public void Decrease_Health_DoesNotGoBelowZero()
         {
             // Act
-            manager.DecreaseHealth(100); // Essayer de retirer plus de santé que disponible
+            _healthManager.DecreaseHealth(100); // Essayer de retirer plus de santé que disponible
 
             // Assert
-            Assert.AreEqual(0, manager.currentHealth); // La santé ne doit pas descendre en dessous de 0
+            Assert.AreEqual(0, _healthManager.currentHealth); // La santé ne doit pas descendre en dessous de 0
         }
 
         [TearDown]
         public void TearDown()
         {
             // Nettoyer après le test
-            Object.DestroyImmediate(manager.gameObject);
+            Object.DestroyImmediate(_healthManager.gameObject);
         }
     }
 }

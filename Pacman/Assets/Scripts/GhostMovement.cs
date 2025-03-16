@@ -15,8 +15,8 @@ public class GhostMovement : MonoBehaviour
     public Rigidbody2D rb;
     public Transform respawnPointGhost;
     public bool isInHouse = true;
-    private Vector2 _targetDirection;
-    private Vector2 _lastDirection;
+    public Vector2 _targetDirection;
+    public Vector2 _lastDirection;
     
     public GameObject seeUp;
     public GameObject seeDown;
@@ -52,6 +52,15 @@ public class GhostMovement : MonoBehaviour
     /// </summary>
     private void Start()
     {
+        seeUp.SetActive(false);
+        seeDown.SetActive(true);
+        seeLeft.SetActive(false);
+        seeRight.SetActive(false);
+        beChasingSeeUp.SetActive(false);
+        beChasingSeeDown.SetActive(false);
+        beChasingSeeLeft.SetActive(false);
+        beChasingSeeRight.SetActive(false);
+        
         AlignToTileCenter();
         ChooseNewDirection();
 
@@ -63,7 +72,6 @@ public class GhostMovement : MonoBehaviour
         {
             StartCoroutine(ReleaseFromHouse());
         }
-        UpdateSprite();
     }
 
     /// <summary>
@@ -224,7 +232,7 @@ public class GhostMovement : MonoBehaviour
     private void ChooseNewDirection()
     {
         if (isInHouse) return;
-
+        
         List<Vector2> availableDirections = new List<Vector2>();
         Vector2[] allDirections = { Vector2.left, Vector2.right, Vector2.up, Vector2.down };
 
@@ -260,7 +268,7 @@ public class GhostMovement : MonoBehaviour
     /// </summary>
     /// <param name="directions">Liste de direction possible</param>
     /// <returns>directions</returns>
-    private List<Vector2> MajAvalableDirections(List<Vector2> directions)
+    public List<Vector2> MajAvalableDirections(List<Vector2> directions)
     {
         if (_lastDirection == Vector2.up || _lastDirection == Vector2.down)
         {

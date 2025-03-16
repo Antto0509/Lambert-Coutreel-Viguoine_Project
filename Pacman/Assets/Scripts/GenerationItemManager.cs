@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+using NUnit.Framework;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Tilemaps;
@@ -13,7 +15,7 @@ public class GenerationItemManager : MonoBehaviour
     public GameObject SuperPacGommePrefab;
 
     // Liste des objets PacGomme présents dans la scène
-    public GameObject[] pacGommeLst;
+    public List<GameObject> pacGommeLst;
 
     // Compteur pour limiter le nombre de Super PacGommes générées
     public int SuperPacGommeCount = 0;
@@ -38,11 +40,12 @@ public class GenerationItemManager : MonoBehaviour
     /// Vérifie le nombre de PacGommes & SuperPacGomme restantes dans la scène.
     /// Si aucune PacGomme n'est trouvée, régénère les PacGommes sur toutes les cellules de la route.
     /// </summary>
-    public void CheckPacGommeCount()
+    private void CheckPacGommeCount()
     {
-        pacGommeLst = GameObject.FindGameObjectsWithTag("PacGomme");
+        pacGommeLst.Clear();
+        pacGommeLst.AddRange(GameObject.FindGameObjectsWithTag("PacGomme"));
         pacGommeLst.AddRange(GameObject.FindGameObjectsWithTag("SuperPacGomme"));
-        if (pacGommeLst.Length == 0)
+        if (pacGommeLst.Count == 0)
         {
             // Debug.Log("Fin de plateau !");
             SetPacGommeOnAllRoadCell();
@@ -50,9 +53,9 @@ public class GenerationItemManager : MonoBehaviour
     }
 
     /// <summary>
-    /// Place des PacGommes ou des Super PacGommes sur toutes les cellules de la route.
+    /// Place des PacGommes et des Super PacGommes sur toutes les cellules de la route.
     /// </summary>
-    public void SetPacGommeOnAllRoadCell()
+    public void SetPacGommeOnAllRoadCell(bool test = false)
     {
         // Parcourt toutes les positions des cellules dans les limites de la Tilemap
         foreach (Vector3Int position in roadTilemap.cellBounds.allPositionsWithin)
@@ -89,14 +92,14 @@ public class GenerationItemManager : MonoBehaviour
                     // Convertit la position de la cellule en position mondiale
                     Vector3 worldPosition = roadTilemap.GetCellCenterWorld(position);
                     worldPosition.z = 0; // Assure que la position Z est à 0
-
+        
                     
                     // Si on peut placer une Super PacGomme et que le nombre maximum n'est pas atteint
                     if (GetRandomBoolWithChance(1) && SuperPacGommeCount < 5)
                     {
                         // Vérifie s'il y a déjà une Super PacGomme ou une PacGomme à cette position
                         Collider2D[] colliders = Physics2D.OverlapCircleAll(worldPosition, 0.1f); // Rayon petit pour éviter les collisions indésirables
-
+        
                         foreach (Collider2D collider in colliders)
                         {
                             if (collider.CompareTag("SuperPacGomme"))
@@ -104,11 +107,18 @@ public class GenerationItemManager : MonoBehaviour
                                 // Il y a déjà une Super PacGomme ici, on ne peut pas en placer une nouvelle
                                 break;
                             }
-
+        
                             if (collider.CompareTag("PacGomme"))
                             {
                                 // Il y a une PacGomme ici, on la détruit avant de placer une Super PacGomme
-                                Destroy(collider.gameObject);
+                                if (test)
+                                {
+                                    DestroyImmediate(collider.gameObject);
+                                }
+                                else
+                                {
+                                    Destroy(collider.gameObject);
+                                }
                                 Instantiate(SuperPacGommePrefab, worldPosition, Quaternion.identity);
                                 SuperPacGommeCount += 1; // Incrémente le compteur de Super PacGommes
                             }
