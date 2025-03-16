@@ -55,6 +55,26 @@ namespace Editor
             Assert.AreEqual(5, _generationItemManager.SuperPacGommeCount);
         }
 
+        [Test]
+        public void TestCountPacGomme()
+        {
+            _generationItemManager.SetPacGommeOnAllRoadCell(true);
+
+            var countTile = 0;
+            
+            // Parcourt toutes les positions dans les limites de la Tilemap
+            foreach (Vector3Int position in _generationItemManager.roadTilemap.cellBounds.allPositionsWithin)
+            {
+                // Vérifie si une tuile est présente à cette position
+                if (_generationItemManager.roadTilemap.HasTile(position))
+                {
+                    countTile++;
+                }
+            }
+            
+            Assert.AreEqual(countTile - _generationItemManager.SuperPacGommeCount, _generationItemManager.PacGommeCount);
+        }
+
         [TearDown]
         public void TearDown()
         {

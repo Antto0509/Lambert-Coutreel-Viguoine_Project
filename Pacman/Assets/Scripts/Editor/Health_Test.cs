@@ -29,12 +29,16 @@ namespace Editor
 
             // Assert
             Assert.AreEqual(13, _healthManager.currentHealth); // Vérifier que la santé a augmenté
+        }
 
+        [Test]
+        public void Remove_Health_Test()
+        {
             // Act
             _healthManager.DecreaseHealth(2);
 
             // Assert
-            Assert.AreEqual(11, _healthManager.currentHealth); // Vérifier que la santé a diminué
+            Assert.AreEqual(1, _healthManager.currentHealth); // Vérifier que la santé a diminué
         }
 
         [Test]

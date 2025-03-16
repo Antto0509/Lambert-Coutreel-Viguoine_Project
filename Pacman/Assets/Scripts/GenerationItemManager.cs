@@ -19,6 +19,9 @@ public class GenerationItemManager : MonoBehaviour
 
     // Compteur pour limiter le nombre de Super PacGommes générées
     public int SuperPacGommeCount = 0;
+    
+    // Compteur de PacGommes générées
+    public int PacGommeCount = 0;
 
     /// <summary>
     /// Initialise la génération des PacGommes sur toutes les cellules de la route au démarrage du jeu.
@@ -77,6 +80,7 @@ public class GenerationItemManager : MonoBehaviour
                 {
                     // Génère une PacGomme normale
                     Instantiate(pacGommePrefab, worldPosition, Quaternion.identity);
+                    PacGommeCount += 1;
                 }
             }
         }
@@ -121,6 +125,7 @@ public class GenerationItemManager : MonoBehaviour
                                 }
                                 Instantiate(SuperPacGommePrefab, worldPosition, Quaternion.identity);
                                 SuperPacGommeCount += 1; // Incrémente le compteur de Super PacGommes
+                                PacGommeCount -= 1;
                             }
                         }
                         

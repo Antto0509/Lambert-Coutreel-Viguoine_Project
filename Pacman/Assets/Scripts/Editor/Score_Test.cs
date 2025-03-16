@@ -27,11 +27,25 @@ namespace Editor
             
             Assert.AreEqual("10", _scoreManager.scoreText.text);
             Assert.AreEqual(10, _scoreManager.score);
-            
+        }
+
+        [Test]
+        public void Add_Score_2()
+        {
+            _scoreManager.AddScore(5);
             _scoreManager.AddScore(20);
             
-            Assert.AreEqual("30", _scoreManager.scoreText.text);
-            Assert.AreEqual(30, _scoreManager.score);
+            Assert.AreEqual("25", _scoreManager.scoreText.text);
+            Assert.AreEqual(25, _scoreManager.score);
+        }
+
+        [Test]
+        public void Add_Score_Negative()
+        {
+            _scoreManager.AddScore(-10);
+            
+            Assert.AreEqual("-10", _scoreManager.scoreText.text);
+            Assert.AreEqual(-10, _scoreManager.score);
         }
 
         [TearDown]
