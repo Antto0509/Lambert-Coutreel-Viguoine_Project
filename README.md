@@ -16,6 +16,9 @@ Le jeu propose une expérience à la fois nostalgique et rafraîchie, avec des g
 - **Système de points** pour augmenter le score
 - **Power-ups temporaires** pour inverser les rôles et chasser les fantômes
 
+## Documentation : 
+https://claire-viguoine.atlassian.net/wiki/x/ioAD?atlOrigin=eyJpIjoiYTE4MTMxYzk4NjA3NDQwOGE5NGFlNTVmYjk5NzNhZTgiLCJwIjoiYyJ9
+
 ## Installation
 Suivez ces étapes pour obtenir et exécuter le projet sur votre machine.
 
